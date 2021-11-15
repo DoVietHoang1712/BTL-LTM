@@ -202,10 +202,12 @@ public class GameClient implements Runnable {
             // set login email
             this.loginPlayer = result;
             RunServer.clientManager.add(this);
+            
+            sendData(StreamData.Type.LOGIN.name() + ";" + "true" + ";" + username);
         }
 
         // send result
-        sendData(StreamData.Type.LOGIN.name() + ";" + "true" + ";" + username);
+        sendData(StreamData.Type.LOGIN.name() + ";" + "false" + ";" + username);
     }
 
     private void onReceiveSignup(String received) {

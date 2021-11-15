@@ -33,7 +33,7 @@ public class MysqlConnector {
     
     public static Connection getConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/carodb?useUnicode=true&characterEncoding=UTF-8", "root", "");
             
@@ -53,7 +53,7 @@ public class MysqlConnector {
 
     boolean checkDriver() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             return true;
         } catch (ClassNotFoundException e) {
             System.err.println("Khong tim thay Driver mysql !!");
