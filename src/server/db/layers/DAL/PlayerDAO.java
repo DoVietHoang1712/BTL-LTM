@@ -147,8 +147,30 @@ public class PlayerDAO {
         return result;
     }
 
-    public String signup(String email, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean signup(String username, String password) {
+        boolean result = false;
+        Connection connection = MysqlConnector.getConnection();
+        try {
+            String qry = "INSERT INTO Player(Username,Password,Elo,MatchCount,WinCount) "
+                    + "VALUES(?,?,0,0,0)";
+
+            PreparedStatement stm = connection.prepareStatement(qry);
+            stm.setString(1, username);
+            stm.setString(2, password);
+
+            result = stm.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(PlayerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PlayerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return result;
     }
 
     public String changePassword(String username, String oldPassword, String newPassword) {

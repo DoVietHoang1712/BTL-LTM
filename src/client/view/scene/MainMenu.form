@@ -154,17 +154,14 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="btnCreateRoom">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_add_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="T&#x1ea1;o ph&#xf2;ng"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCreateRoomActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnFindMatch">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_circled_play_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="T&#xec;m tr&#x1ead;n"/>
               </Properties>
               <Events>
@@ -173,17 +170,14 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnJoin">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_open_door_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="V&#xe0;o ph&#xf2;ng"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnJoinActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnWatch">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_vision_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="V&#xe0;o xem"/>
               </Properties>
               <Events>
@@ -222,9 +216,6 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="btnLogout">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_logout_rounded_left_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
               </Properties>
               <Events>
@@ -233,9 +224,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnProfile">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_contact_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="H&#x1ed3; s&#x1a1;"/>
               </Properties>
               <Events>
@@ -303,9 +291,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnCancelFindMatch">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_cancel_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="H&#x1ee7;y"/>
               </Properties>
               <Events>
@@ -347,7 +332,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" pref="222" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="232" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnRefreshListRoom" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -382,9 +367,6 @@
                 </Container>
                 <Component class="javax.swing.JButton" name="btnRefreshListRoom">
                   <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/client/view/asset/icons8_replay_24px.png"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i"/>
                   </Properties>
                   <Events>
@@ -519,9 +501,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnDeclinePairMatch">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_cancel_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="T&#x1eeb; ch&#x1ed1;i"/>
               </Properties>
               <Events>
@@ -530,9 +509,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnAcceptPairMatch">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/client/view/asset/icons8_ok_24px.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Ch&#x1ea5;p nh&#x1ead;n"/>
               </Properties>
               <Events>

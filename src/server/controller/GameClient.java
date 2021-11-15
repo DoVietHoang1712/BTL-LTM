@@ -213,15 +213,11 @@ public class GameClient implements Runnable {
     private void onReceiveSignup(String received) {
         // get data from received
         String[] splitted = received.split(";");
-        String email = splitted[1];
+        String username = splitted[1];
         String password = splitted[2];
-//        String avatar = splitted[3];
-//        String name = splitted[4];
-//        String gender = splitted[5];
-//        int yearOfBirth = Integer.parseInt(splitted[6]);
 
         // sign up
-        String result = new PlayerDAO().signup(email, password);
+        boolean result = new PlayerDAO().signup(username, password);
 
         // send data
         sendData(StreamData.Type.SIGNUP.name() + ";" + result);

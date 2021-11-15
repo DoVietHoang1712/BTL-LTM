@@ -44,7 +44,7 @@ public class RunClient {
 
     public RunClient() {
         socketHandler = new SocketHandler();
-        String result = socketHandler.connect("127.0.0.1", 12345);
+        socketHandler.connect("127.0.0.1", 12345);
     }
 
     public static void openScene(SceneName sceneName) {

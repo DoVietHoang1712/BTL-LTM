@@ -222,10 +222,13 @@ public class MainMenu extends javax.swing.JFrame {
 
         plBtns.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng"));
 
-        btnCreateRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_add_24px.png"))); // NOI18N
         btnCreateRoom.setText("Tạo phòng");
+        btnCreateRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateRoomActionPerformed(evt);
+            }
+        });
 
-        btnFindMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_circled_play_24px.png"))); // NOI18N
         btnFindMatch.setText("Tìm trận");
         btnFindMatch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,10 +236,13 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnJoin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_open_door_24px.png"))); // NOI18N
         btnJoin.setText("Vào phòng");
+        btnJoin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJoinActionPerformed(evt);
+            }
+        });
 
-        btnWatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_vision_24px.png"))); // NOI18N
         btnWatch.setText("Vào xem");
         btnWatch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,7 +277,6 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_logout_rounded_left_24px.png"))); // NOI18N
         btnLogout.setText("Đăng xuất");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -279,7 +284,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
         btnProfile.setText("Hồ sơ");
         btnProfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -316,7 +320,6 @@ public class MainMenu extends javax.swing.JFrame {
 
         jProgressBar2.setIndeterminate(true);
 
-        btnCancelFindMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_cancel_24px.png"))); // NOI18N
         btnCancelFindMatch.setText("Hủy");
         btnCancelFindMatch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -371,7 +374,6 @@ public class MainMenu extends javax.swing.JFrame {
         tbListRoom.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbListRoom);
 
-        btnRefreshListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_replay_24px.png"))); // NOI18N
         btnRefreshListRoom.setText("Làm mới");
         btnRefreshListRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -396,7 +398,7 @@ public class MainMenu extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefreshListRoom)
                 .addContainerGap())
@@ -443,7 +445,6 @@ public class MainMenu extends javax.swing.JFrame {
         lbFoundMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbFoundMatch.setText("Đã tìm thấy đối thủ ... Vào ngay?");
 
-        btnDeclinePairMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_cancel_24px.png"))); // NOI18N
         btnDeclinePairMatch.setText("Từ chối");
         btnDeclinePairMatch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -451,7 +452,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnAcceptPairMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_ok_24px.png"))); // NOI18N
         btnAcceptPairMatch.setText("Chấp nhận");
         btnAcceptPairMatch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -587,6 +587,14 @@ public class MainMenu extends javax.swing.JFrame {
     private void btnRefreshListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshListRoomActionPerformed
         RunClient.socketHandler.listRoom();
     }//GEN-LAST:event_btnRefreshListRoomActionPerformed
+
+    private void btnCreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateRoomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCreateRoomActionPerformed
+
+    private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnJoinActionPerformed
 
     /**
      * @param args the command line arguments

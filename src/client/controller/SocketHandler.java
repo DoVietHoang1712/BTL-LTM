@@ -227,11 +227,9 @@ public class SocketHandler {
         RunClient.signupScene.setLoading(false);
 
         // check status
-        if (status.equals("failed")) {
-            String failedMsg = splitted[2];
-            JOptionPane.showMessageDialog(RunClient.signupScene, failedMsg, "Lỗi", JOptionPane.ERROR_MESSAGE);
-
-        } else if (status.equals("success")) {
+        if (status.equals("false")) {
+            JOptionPane.showMessageDialog(RunClient.signupScene, "Tên đăng nhập đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } else if (status.equals("true")) {
             JOptionPane.showMessageDialog(RunClient.signupScene, "Đăng ký thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
             RunClient.closeScene(RunClient.SceneName.SIGNUP);
             RunClient.openScene(RunClient.SceneName.LOGIN);

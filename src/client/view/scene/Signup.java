@@ -111,6 +111,11 @@ public class Signup extends javax.swing.JFrame {
                 btnSignupMouseClicked(evt);
             }
         });
+        btnSignup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignupActionPerformed(evt);
+            }
+        });
 
         btnLogin.setText("Đăng nhập?");
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -187,6 +192,10 @@ public class Signup extends javax.swing.JFrame {
         this.dispose();
         RunClient.openScene(RunClient.SceneName.LOGIN);
     }//GEN-LAST:event_btnLoginMouseClicked
+
+    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSignupActionPerformed
 
     /**
      * @param args the command line arguments
