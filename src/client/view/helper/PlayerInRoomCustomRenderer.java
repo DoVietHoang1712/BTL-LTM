@@ -22,9 +22,9 @@ public class PlayerInRoomCustomRenderer extends JLabel implements ListCellRender
 
     @Override
     public Component getListCellRendererComponent(JList<? extends PlayerInGame> jlist, PlayerInGame p, int index, boolean isSelected, boolean cellHasFocus) {
-        ImageIcon imageIcon = new ImageIcon(Avatar.PATH + p.getAvatar());
-        setIcon(imageIcon);
-        setText(p.getNameId());
+        // ImageIcon imageIcon = new ImageIcon(Avatar.PATH + p.getAvatar());
+        // setIcon(imageIcon);
+        setText(p.getUsername());
 
         if (isSelected) {
             setBackground(jlist.getSelectionBackground());

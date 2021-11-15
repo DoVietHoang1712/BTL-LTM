@@ -42,6 +42,8 @@ public class InGame extends javax.swing.JFrame {
     DefaultListModel<PlayerInGame> listPlayersModel;
     PlayerInGame player1;
     PlayerInGame player2;
+    PlayerInGame player3;
+    PlayerInGame player4;
     int turn = 0;
 
     JButton btnOnBoard[][];
@@ -71,7 +73,7 @@ public class InGame extends javax.swing.JFrame {
                     int index = list.locationToIndex(evt.getPoint());
 
                     RunClient.openScene(RunClient.SceneName.PROFILE);
-                    RunClient.profileScene.loadProfileData(listPlayersModel.get(index).getEmail());
+                    RunClient.profileScene.loadProfileData(listPlayersModel.get(index).getUsername());
                 }
             }
         });
@@ -97,29 +99,32 @@ public class InGame extends javax.swing.JFrame {
         });
     }
 
-    public void setPlayerInGame(PlayerInGame p1, PlayerInGame p2) {
+    public void setPlayerInGame(PlayerInGame p1, PlayerInGame p2, PlayerInGame p3, PlayerInGame p4) {
         // save data
         player1 = p1;
         player2 = p2;
+        player3 = p3;
+        player4 = p4;          
 
         // player 1
-        lbPlayerNameId1.setText(p1.getNameId());
-        if (p1.getAvatar().equals("")) {
-            lbAvatar1.setIcon(new ImageIcon(Avatar.PATH + Avatar.EMPTY_AVATAR));
-        } else {
-            lbAvatar1.setIcon(new ImageIcon(Avatar.PATH + p1.getAvatar()));
-        }
+        lbPlayerNameId1.setText(p1.getUsername());
+//        if (p1.getAvatar().equals("")) {
+//            lbAvatar1.setIcon(new ImageIcon(Avatar.PATH + Avatar.EMPTY_AVATAR));
+//        } else {
+//            lbAvatar1.setIcon(new ImageIcon(Avatar.PATH + p1.getAvatar()));
+//        }
 
         // player 2
-        lbPlayerNameId2.setText(p2.getNameId());
-        lbAvatar2.setIcon(new ImageIcon(Avatar.PATH + Avatar.EMPTY_AVATAR));
-        if (p2.getAvatar().equals("")) {
-            lbAvatar2.setIcon(new ImageIcon(Avatar.PATH + Avatar.EMPTY_AVATAR));
-        } else {
-            lbAvatar2.setIcon(new ImageIcon(Avatar.PATH + p2.getAvatar()));
-        }
+        lbPlayerNameId2.setText(p2.getUsername());
+        // lbAvatar2.setIcon(new ImageIcon(Avatar.PATH + Avatar.EMPTY_AVATAR));
+//        if (p2.getAvatar().equals("")) {
+//            lbAvatar2.setIcon(new ImageIcon(Avatar.PATH + Avatar.EMPTY_AVATAR));
+//        } else {
+//            lbAvatar2.setIcon(new ImageIcon(Avatar.PATH + p2.getAvatar()));
+//        }
 
         // reset turn
+        
         lbActive1.setVisible(false);
         lbActive2.setVisible(false);
     }
@@ -152,7 +157,7 @@ public class InGame extends javax.swing.JFrame {
             addChat(new ChatItem("[]", "KẾT QUẢ", "Bạn đã thắng"));
             JOptionPane.showMessageDialog(this, "Chúc mừng. Bạn đã chiến thắng.", "Chiến thắng", JOptionPane.INFORMATION_MESSAGE);
 
-        } else if (myEmail.equals(player1.getEmail()) || myEmail.equals(player2.getEmail())) {
+        } else if (myEmail.equals(player1.getUsername()) || myEmail.equals(player2.getUsername())) {
             // nếu mình là 1 trong 2 người chơi, mà winEmail ko phải mình => thua
             addChat(new ChatItem("[]", "KẾT QUẢ", "Bạn đã thua"));
             JOptionPane.showMessageDialog(this, "Rất tiếc. Bạn đã thua cuộc.", "Thua cuộc", JOptionPane.INFORMATION_MESSAGE);
@@ -160,10 +165,10 @@ public class InGame extends javax.swing.JFrame {
         } else {
             // còn lại là viewers
             String nameId = "";
-            if (player1.getEmail().equals(winEmail)) {
-                nameId = player1.getNameId();
+            if (player1.getUsername().equals(winEmail)) {
+                nameId = player1.getUsername();
             } else {
-                nameId = player2.getNameId();
+                nameId = player2.getUsername();
             }
             addChat(new ChatItem("[]", "KẾT QUẢ", "Người chơi " + nameId + " đã thắng"));
             JOptionPane.showMessageDialog(this, "Người chơi " + nameId + " đã thắng", "Kết quả", JOptionPane.INFORMATION_MESSAGE);
@@ -214,7 +219,7 @@ public class InGame extends javax.swing.JFrame {
 
     // change turn sang cho email đầu vào
     public void setTurn(String email) {
-        if (player1.getEmail().equals(email)) {
+        if (player1.getUsername().equals(email)) {
             turnTimer.restart();
             turn = 1;
             lbActive1.setVisible(true);
@@ -223,7 +228,7 @@ public class InGame extends javax.swing.JFrame {
             lbAvatar2.setBorder(javax.swing.BorderFactory.createTitledBorder("Chờ"));
         }
 
-        if (player2.getEmail().equals(email)) {
+        if (player2.getUsername().equals(email)) {
             turnTimer.restart();
             turn = 2;
             lbActive1.setVisible(false);
@@ -231,14 +236,29 @@ public class InGame extends javax.swing.JFrame {
             lbAvatar1.setBorder(javax.swing.BorderFactory.createTitledBorder("Chờ"));
             lbAvatar2.setBorder(javax.swing.BorderFactory.createTitledBorder("Đang đánh.."));
         }
+        
+        if (player3.getUsername().equals(email)) {
+            turnTimer.restart();
+            turn = 3;
+            
+        }
+        
+        if (player4.getUsername().equals(email)) {
+            turnTimer.restart();
+            turn = 4;
+        }
     }
 
     // change turn sang cho đối thủ của email đầu vào
     public void changeTurnFrom(String email) {
-        if (email.equals(player1.getEmail())) {
-            setTurn(player2.getEmail());
-        } else {
-            setTurn(player1.getEmail());
+        if (email.equals(player1.getUsername())) {
+            setTurn(player2.getUsername());
+        } else if (email.equals(player2.getUsername())) {
+            setTurn(player3.getUsername());
+        } else if (email.equals(player3.getUsername())) {
+            setTurn(player4.getUsername());
+        } else if (email.equals(player4.getUsername())) {
+            setTurn(player1.getUsername());
         }
     }
 
@@ -267,9 +287,13 @@ public class InGame extends javax.swing.JFrame {
         lastMove.setBackground(Color.yellow);
         lastMove.setActionCommand(email); // save email as state
 
-        if (email.equals(player1 != null ? player1.getEmail() : "")) {
+        if (email.equals(player1 != null ? player1.getUsername(): "")) {
             lastMove.setIcon(p1Icon);
-        } else {
+        } else if (email.equals(player2 != null ? player2.getUsername(): "")) {
+            lastMove.setIcon(p2Icon);
+        } else if (email.equals(player3 != null ? player3.getUsername(): "")) {
+            lastMove.setIcon(p1Icon);
+        } else if (email.equals(player4 != null ? player4.getUsername(): "")) {
             lastMove.setIcon(p2Icon);
         }
     }
@@ -283,7 +307,7 @@ public class InGame extends javax.swing.JFrame {
     public void clickOnBoard(int row, int column) {
         String myEmail = RunClient.socketHandler.getLoginEmail();
 
-        if (myEmail.equals(player1.getEmail()) || myEmail.equals(player2.getEmail())) {
+        if (myEmail.equals(player1.getUsername()) || myEmail.equals(player2.getUsername())) {
             RunClient.socketHandler.move(row, column);
         }
     }
@@ -309,11 +333,19 @@ public class InGame extends javax.swing.JFrame {
 
                     String myEmail = RunClient.socketHandler.getLoginEmail();
 
-                    if (myEmail.equals(player1.getEmail()) && (turn == 1 || turn == 0)) {
+                    if (myEmail.equals(player1.getUsername()) && (turn == 1)) {
                         b.setIcon(p1Icon);
                     }
 
-                    if (myEmail.equals(player2.getEmail()) && (turn == 2 || turn == 0)) {
+                    if (myEmail.equals(player2.getUsername()) && (turn == 2)) {
+                        b.setIcon(p2Icon);
+                    }
+                    
+                    if (myEmail.equals(player3.getUsername()) && (turn == 3)) {
+                        b.setIcon(p1Icon);
+                    }
+                    
+                    if (myEmail.equals(player4.getUsername()) && (turn == 4)) {
                         b.setIcon(p2Icon);
                     }
                 }

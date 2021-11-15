@@ -190,10 +190,10 @@ public class GameClient implements Runnable {
         String password = splitted[2];
 
         // check đã được đăng nhập ở nơi khác
-        if (RunServer.clientManager.find(username) != null) {
-            sendData(StreamData.Type.LOGIN.name() + ";false;" + Code.ACCOUNT_LOGEDIN);
-            return;
-        }
+//        if (RunServer.clientManager.find(username) != null) {
+//            sendData(StreamData.Type.LOGIN.name() + ";false;" + Code.ACCOUNT_LOGEDIN);
+//            return;
+//        }
 
         // check login
         Player result = new PlayerDAO().login(username, password);
@@ -204,10 +204,11 @@ public class GameClient implements Runnable {
             RunServer.clientManager.add(this);
             
             sendData(StreamData.Type.LOGIN.name() + ";" + "true" + ";" + username);
+        } else {
+            // send result
+            sendData(StreamData.Type.LOGIN.name() + ";" + "false" + ";" + username);
         }
 
-        // send result
-        sendData(StreamData.Type.LOGIN.name() + ";" + "false" + ";" + username);
     }
 
     private void onReceiveSignup(String received) {
@@ -630,11 +631,13 @@ public class GameClient implements Runnable {
             );
             if (this.joinedRoom.getTeam1().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this)) {
                 ArrayList<GameClient> clients = this.joinedRoom.getTeam1();
+                System.out.println(this.loginPlayer.getUsername() + " " +"team 1");
                 clients.add(this);
                 this.joinedRoom.setTeam1(clients);
             }
             if (this.joinedRoom.getTeam2().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this)) {
                 ArrayList<GameClient> clients = this.joinedRoom.getTeam2();
+                System.out.println(this.loginPlayer.getUsername() + " " +"team 2");
                 clients.add(this);
                 this.joinedRoom.setTeam2(clients);
             }

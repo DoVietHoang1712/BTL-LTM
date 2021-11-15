@@ -10,43 +10,24 @@ package client.model;
  */
 public class PlayerInGame {
 
-    String email;
-    String nameId;
-    String avatar;
+    String username;
 
-    public PlayerInGame(String email, String nameId, String avatar) {
-        this.email = email;
-        this.nameId = nameId;
-        this.avatar = avatar;
+    public PlayerInGame(String username) {
+        this.username = username;
     }
 
     @Override
     public String toString() {
-        return nameId;
+        return this.username;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
-
-    public String getNameId() {
-        return nameId;
-    }
-
-    public void setNameId(String nameId) {
-        this.nameId = nameId;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
+    
+    
 }

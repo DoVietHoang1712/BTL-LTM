@@ -140,7 +140,7 @@ public class SocketHandler {
                         break;
 
                     case CHAT_ROOM:
-                        onReceiveChatRoom(received);
+                        // onReceiveChatRoom(received);
                         break;
 
                     case LEAVE_ROOM:
@@ -387,16 +387,18 @@ public class SocketHandler {
             int index = 2;
 
             // player
-            PlayerInGame p1 = new PlayerInGame(splitted[index++], splitted[index++], splitted[index++]);
-            PlayerInGame p2 = new PlayerInGame(splitted[index++], splitted[index++], splitted[index++]);
-            RunClient.inGameScene.setPlayerInGame(p1, p2);
+            PlayerInGame p1 = new PlayerInGame(splitted[index++]);
+            PlayerInGame p2 = new PlayerInGame(splitted[index++]);
+            PlayerInGame p3 = new PlayerInGame(splitted[index++]);
+            PlayerInGame p4 = new PlayerInGame(splitted[index++]);
+            RunClient.inGameScene.setPlayerInGame(p1, p2, p3, p4);
 
             // list player+viewer
             int playersCount = Integer.parseInt(splitted[index++]);
             ArrayList<PlayerInGame> listUser = new ArrayList<>();
 
             for (int i = 0; i < playersCount; i++) {
-                listUser.add(new PlayerInGame(splitted[index++], splitted[index++], splitted[index++]));
+                listUser.add(new PlayerInGame(splitted[index++]));
             }
             RunClient.inGameScene.setListUser(listUser);
 
