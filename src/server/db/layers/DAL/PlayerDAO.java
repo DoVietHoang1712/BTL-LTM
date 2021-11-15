@@ -30,6 +30,7 @@ public class PlayerDAO {
             ResultSet rs = stm.executeQuery();
             if(rs.next()) {
                 Player p = new Player();
+                p.setId(rs.getInt("id"));
                 p.setElo(rs.getInt("elo"));
                 p.setUsername(rs.getString("username"));
                 p.setPassword(rs.getString("password"));

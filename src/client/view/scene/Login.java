@@ -22,7 +22,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-
+    
     public void setLoading(boolean isLoading) {
         btnSignup.setEnabled(!isLoading);
         btnLogin.setEnabled(!isLoading);
@@ -149,36 +149,25 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        new Thread(() -> {
-            setLoading(true);
-            // call controller
-            String result = RunClient.socketHandler.connect("127.0.0.1", 12345);
-
-            // check result
-            if (result.equals("success")) {
-                String username = txUsername.getText();
-                String password = new String(txPassword.getPassword());
-
-                if (!Validation.checkUsername(username)) {
-                    JOptionPane.showMessageDialog(this, "Username không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    txUsername.requestFocus();
-                    setLoading(false);
-                    return;
-                }
-                if (!Validation.checkPassword(password)) {
-                    JOptionPane.showMessageDialog(this, "Mật khẩu phải từ 6-30 ký tự", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    txPassword.requestFocus();
-                    setLoading(false);
-                    return;
-                }
-                RunClient.socketHandler.login(username, password);
-                setLoading(false);
-            } else {
-                String failedMsg = result.split(";")[1];
-                setLoading(false);
-                JOptionPane.showMessageDialog(this, failedMsg, "Lỗi kết nối", JOptionPane.ERROR_MESSAGE);
-            }
-        }).start();
+        
+        String username = txUsername.getText();
+        String password = new String(txPassword.getPassword());
+        
+        if (!Validation.checkUsername(username)) {
+            JOptionPane.showMessageDialog(this, "Username không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txUsername.requestFocus();
+            setLoading(false);
+            return;
+        }
+        if (!Validation.checkPassword(password)) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu phải từ 6-30 ký tự", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            txPassword.requestFocus();
+            setLoading(false);
+            return;
+        }
+        setLoading(true);
+        RunClient.socketHandler.login(username, password);
+        setLoading(false);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
