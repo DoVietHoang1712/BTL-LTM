@@ -13,6 +13,7 @@ import client.view.scene.Login;
 import client.view.scene.MainMenu;
 import client.view.scene.Profile;
 import client.view.scene.Signup;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,6 +44,7 @@ public class RunClient {
 
     public RunClient() {
         socketHandler = new SocketHandler();
+        String result = socketHandler.connect("127.0.0.1", 12345);
     }
 
     public static void openScene(SceneName sceneName) {
