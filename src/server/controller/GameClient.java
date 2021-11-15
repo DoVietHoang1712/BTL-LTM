@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package server.controller;
-
+  
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -213,10 +213,10 @@ public class GameClient implements Runnable {
         String[] splitted = received.split(";");
         String email = splitted[1];
         String password = splitted[2];
-        String avatar = splitted[3];
-        String name = splitted[4];
-        String gender = splitted[5];
-        int yearOfBirth = Integer.parseInt(splitted[6]);
+//        String avatar = splitted[3];
+//        String name = splitted[4];
+//        String gender = splitted[5];
+//        int yearOfBirth = Integer.parseInt(splitted[6]);
 
         // sign up
         String result = new PlayerDAO().signup(email, password);
