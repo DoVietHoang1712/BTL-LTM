@@ -197,7 +197,7 @@ public class Caro extends GameLogic {
             to = temp;
             count++;
         }
-
+        System.out.println(count);
         // nếu có 5 ô giống nhau liên tiếp nhau => win
         if (count == 5) {
             return new Line(from.x, from.y, to.x, to.y);

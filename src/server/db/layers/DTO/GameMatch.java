@@ -88,6 +88,30 @@ public class GameMatch {
         this.chat = chat;
     }
 
+    public String getUsername3() {
+        return username3;
+    }
+
+    public void setUsername3(String username3) {
+        this.username3 = username3;
+    }
+
+    public String getUsername4() {
+        return username4;
+    }
+
+    public void setUsername4(String username4) {
+        this.username4 = username4;
+    }
+
+    public String getWinnerID2() {
+        return winnerID2;
+    }
+
+    public void setWinnerID2(String winnerID2) {
+        this.winnerID2 = winnerID2;
+    }
+
     public GameMatch(int id, String playerID1, String playerID2, String winnerID, int playTime, int totalMove, LocalDateTime startedTime, String chat) {
         this.id = id;
         this.username1 = playerID1;
@@ -118,7 +142,20 @@ public class GameMatch {
         this.startedTime = g.startedTime;
         this.chat = g.chat;
     }
-
+    
+    public GameMatch(int id, String username1, String username2, String username3, String username4, String winnerID, String winnerID2, int playTime, int totalMove, LocalDateTime startedTime) {
+        this.id = id;
+        this.username1 = username1;
+        this.username2 = username2;
+        this.username3 = username3;
+        this.username4 = username4;
+        this.winnerID = winnerID;
+        this.winnerID2 = winnerID2;
+        this.playTime = playTime;
+        this.totalMove = totalMove;
+        this.startedTime = startedTime;
+    }
+    
     public GameMatch(String username1, String username2, String username3, String username4, String winnerID, String winnerID2, int playTime, int totalMove, LocalDateTime startedTime) {
         this.username1 = username1;
         this.username2 = username2;

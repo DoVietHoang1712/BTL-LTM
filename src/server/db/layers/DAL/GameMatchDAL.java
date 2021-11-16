@@ -42,11 +42,13 @@ public class GameMatchDAL {
                             rs.getInt("ID"),
                             rs.getString("username1"),
                             rs.getString("username2"),
-                            rs.getString("WinnerID"),
-                            rs.getInt("PlayTime"),
-                            rs.getInt("TotalMove"),
-                            LocalDateTime.parse(rs.getString("StartedTime")),
-                            rs.getString("Chat")
+                            rs.getString("username3"),
+                            rs.getString("username4"),
+                            rs.getString("winnerID"),
+                            rs.getString("winnerID2"),
+                            rs.getInt("playTime"),
+                            rs.getInt("totalMove"),
+                            LocalDateTime.parse(rs.getString("StartedTime"))
                     );
 
                     result.add(g);
@@ -67,15 +69,18 @@ public class GameMatchDAL {
         connector = new MysqlConnector();
 
         try {
-            String sql = "INSERT INTO GameMatch(username1,username2,WinnerID,PlayTime,TotalMove,StartedTime) "
+            String sql = "INSERT INTO GameMatch(username1,username2,usernam3,username4,winnerID,winnerID2,playTime,totalMove,startedTime) "
                     + "VALUES(?,?,?,?,?,?)";
             PreparedStatement stm = connector.getConnection().prepareStatement(sql);
             stm.setString(1, m.getUsername1());
             stm.setString(2, m.getUsername2());
-            stm.setString(3, m.getWinnerID());
-            stm.setInt(4, m.getPlayTime());
-            stm.setInt(5, m.getTotalMove());
-            stm.setString(6, m.getStartedTime().toString());
+            stm.setString(3, m.getUsername3());
+            stm.setString(4, m.getUsername4());
+            stm.setString(5, m.getWinnerID());
+            stm.setString(6, m.getWinnerID2());
+            stm.setInt(7, m.getPlayTime());
+            stm.setInt(8, m.getTotalMove());
+            stm.setString(9, m.getStartedTime().toString());
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
@@ -95,20 +100,26 @@ public class GameMatchDAL {
             String sql = "UPDATE GameMatch SET "
                     + "username1=?,"
                     + "username2=?,"
-                    + "WinnerID=?,"
-                    + "PlayTime=?,"
-                    + "TotalMove=?,"
-                    + "StartedTime=?"
-                    + " WHERE ID=?";
+                    + "username3=?,"
+                    + "username4=?,"
+                    + "winnerID=?,"
+                    + "winnerID2=?,"
+                    + "playTime=?,"
+                    + "totalMove=?,"
+                    + "startedTime=?"
+                    + " WHERE id=?";
 
             PreparedStatement stm = connector.getConnection().prepareStatement(sql);
             stm.setString(1, m.getUsername1());
             stm.setString(2, m.getUsername2());
-            stm.setString(3, m.getWinnerID());
-            stm.setInt(4, m.getPlayTime());
-            stm.setInt(5, m.getTotalMove());
-            stm.setString(6, m.getStartedTime().toString());
-            stm.setInt(7, m.getId());
+            stm.setString(3, m.getUsername3());
+            stm.setString(4, m.getUsername4());
+            stm.setString(5, m.getWinnerID());
+            stm.setString(6, m.getWinnerID2());
+            stm.setInt(7, m.getPlayTime());
+            stm.setInt(8, m.getTotalMove());
+            stm.setString(9, m.getStartedTime().toString());
+            stm.setInt(10, m.getId());
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
