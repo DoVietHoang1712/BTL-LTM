@@ -44,7 +44,9 @@ public class InGame extends javax.swing.JFrame {
     PlayerInGame player2;
     PlayerInGame player3;
     PlayerInGame player4;
-    int turn = 0;
+    ArrayList<PlayerInGame> winner = new ArrayList<>();
+    ArrayList<PlayerInGame> loser = new ArrayList<>();
+    int turn = 1;
 
     JButton btnOnBoard[][];
     JButton lastMove = null;
@@ -151,28 +153,29 @@ public class InGame extends javax.swing.JFrame {
 
         // get myEmail
         String myEmail = RunClient.socketHandler.getLoginEmail();
-
-        if (winEmail.equals(myEmail)) {
-            // là email của mình thì win
-            addChat(new ChatItem("[]", "KẾT QUẢ", "Bạn đã thắng"));
-            JOptionPane.showMessageDialog(this, "Chúc mừng. Bạn đã chiến thắng.", "Chiến thắng", JOptionPane.INFORMATION_MESSAGE);
-
-        } else if (myEmail.equals(player1.getUsername()) || myEmail.equals(player2.getUsername())) {
-            // nếu mình là 1 trong 2 người chơi, mà winEmail ko phải mình => thua
-            addChat(new ChatItem("[]", "KẾT QUẢ", "Bạn đã thua"));
-            JOptionPane.showMessageDialog(this, "Rất tiếc. Bạn đã thua cuộc.", "Thua cuộc", JOptionPane.INFORMATION_MESSAGE);
-
-        } else {
-            // còn lại là viewers
-            String nameId = "";
-            if (player1.getUsername().equals(winEmail)) {
-                nameId = player1.getUsername();
-            } else {
-                nameId = player2.getUsername();
-            }
-            addChat(new ChatItem("[]", "KẾT QUẢ", "Người chơi " + nameId + " đã thắng"));
-            JOptionPane.showMessageDialog(this, "Người chơi " + nameId + " đã thắng", "Kết quả", JOptionPane.INFORMATION_MESSAGE);
-        }
+        addChat(new ChatItem("[]", "KẾT QUẢ", winEmail +" đã thắng"));
+        JOptionPane.showMessageDialog(this, "Chúc mừng. "+winEmail + " đã chiến thắng.", "Chiến thắng", JOptionPane.INFORMATION_MESSAGE);
+//        if (winEmail.equals(myEmail)) {
+//            // là email của mình thì win
+//            addChat(new ChatItem("[]", "KẾT QUẢ", "Bạn đã thắng"));
+//            JOptionPane.showMessageDialog(this, "Chúc mừng. Bạn đã chiến thắng.", "Chiến thắng", JOptionPane.INFORMATION_MESSAGE);
+//
+//        } else if (myEmail.equals(player1.getUsername()) || myEmail.equals(player2.getUsername())) {
+//            // nếu mình là 1 trong 2 người chơi, mà winEmail ko phải mình => thua
+//            addChat(new ChatItem("[]", "KẾT QUẢ", "Bạn đã thua"));
+//            JOptionPane.showMessageDialog(this, "Rất tiếc. Bạn đã thua cuộc.", "Thua cuộc", JOptionPane.INFORMATION_MESSAGE);
+//
+//        } else {
+//            // còn lại là viewers
+//            String nameId = "";
+//            if (player1.getUsername().equals(winEmail)) {
+//                nameId = player1.getUsername();
+//            } else {
+//                nameId = player2.getUsername();
+//            }
+//            addChat(new ChatItem("[]", "KẾT QUẢ", "Người chơi " + nameId + " đã thắng"));
+//            JOptionPane.showMessageDialog(this, "Người chơi " + nameId + " đã thắng", "Kết quả", JOptionPane.INFORMATION_MESSAGE);
+//        }
 
         // thoát phòng sau khi thua 
         // TODO sau này sẽ cho tạo ván mới, hiện tại cho thoát để tránh lỗi
@@ -221,7 +224,7 @@ public class InGame extends javax.swing.JFrame {
     public void setTurn(String email) {
         if (player1.getUsername().equals(email)) {
             turnTimer.restart();
-            turn = 1;
+            turn = 3;
             lbActive1.setVisible(true);
             lbActive2.setVisible(false);
             lbAvatar1.setBorder(javax.swing.BorderFactory.createTitledBorder("Đang đánh.."));
@@ -230,7 +233,7 @@ public class InGame extends javax.swing.JFrame {
 
         if (player2.getUsername().equals(email)) {
             turnTimer.restart();
-            turn = 2;
+            turn = 4;
             lbActive1.setVisible(false);
             lbActive2.setVisible(true);
             lbAvatar1.setBorder(javax.swing.BorderFactory.createTitledBorder("Chờ"));
@@ -239,24 +242,24 @@ public class InGame extends javax.swing.JFrame {
         
         if (player3.getUsername().equals(email)) {
             turnTimer.restart();
-            turn = 3;
+            turn = 2;
             
         }
         
         if (player4.getUsername().equals(email)) {
             turnTimer.restart();
-            turn = 4;
+            turn = 1;
         }
     }
 
     // change turn sang cho đối thủ của email đầu vào
     public void changeTurnFrom(String email) {
         if (email.equals(player1.getUsername())) {
-            setTurn(player2.getUsername());
-        } else if (email.equals(player2.getUsername())) {
             setTurn(player3.getUsername());
-        } else if (email.equals(player3.getUsername())) {
+        } else if (email.equals(player2.getUsername())) {
             setTurn(player4.getUsername());
+        } else if (email.equals(player3.getUsername())) {
+            setTurn(player2.getUsername());
         } else if (email.equals(player4.getUsername())) {
             setTurn(player1.getUsername());
         }
@@ -287,13 +290,13 @@ public class InGame extends javax.swing.JFrame {
         lastMove.setBackground(Color.yellow);
         lastMove.setActionCommand(email); // save email as state
 
-        if (email.equals(player1 != null ? player1.getUsername(): "")) {
+        if (email.equals(player1.getUsername())) {
             lastMove.setIcon(p1Icon);
-        } else if (email.equals(player2 != null ? player2.getUsername(): "")) {
+        } else if (email.equals(player2.getUsername())) {
+            lastMove.setIcon(p1Icon);
+        } else if (email.equals(player3.getUsername())) {
             lastMove.setIcon(p2Icon);
-        } else if (email.equals(player3 != null ? player3.getUsername(): "")) {
-            lastMove.setIcon(p1Icon);
-        } else if (email.equals(player4 != null ? player4.getUsername(): "")) {
+        } else if (email.equals(player4.getUsername())) {
             lastMove.setIcon(p2Icon);
         }
     }
@@ -307,7 +310,7 @@ public class InGame extends javax.swing.JFrame {
     public void clickOnBoard(int row, int column) {
         String myEmail = RunClient.socketHandler.getLoginEmail();
 
-        if (myEmail.equals(player1.getUsername()) || myEmail.equals(player2.getUsername())) {
+        if (myEmail.equals(player1.getUsername()) || myEmail.equals(player2.getUsername()) || myEmail.equals(player3.getUsername()) || myEmail.equals(player4.getUsername())) {
             RunClient.socketHandler.move(row, column);
         }
     }
@@ -332,21 +335,24 @@ public class InGame extends javax.swing.JFrame {
                 if (b.getActionCommand().equals("")) {
 
                     String myEmail = RunClient.socketHandler.getLoginEmail();
-
                     if (myEmail.equals(player1.getUsername()) && (turn == 1)) {
                         b.setIcon(p1Icon);
+                        turn = 2;
                     }
 
-                    if (myEmail.equals(player2.getUsername()) && (turn == 2)) {
-                        b.setIcon(p2Icon);
+                    if (myEmail.equals(player2.getUsername()) && (turn == 3)) {
+                        b.setIcon(p1Icon);
+                        turn = 4;
                     }
                     
-                    if (myEmail.equals(player3.getUsername()) && (turn == 3)) {
-                        b.setIcon(p1Icon);
+                    if (myEmail.equals(player3.getUsername()) && (turn == 2)) {
+                        b.setIcon(p2Icon);
+                        turn = 3;
                     }
                     
                     if (myEmail.equals(player4.getUsername()) && (turn == 4)) {
                         b.setIcon(p2Icon);
+                        turn = 1;
                     }
                 }
             }

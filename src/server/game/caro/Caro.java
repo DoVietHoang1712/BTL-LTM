@@ -21,8 +21,8 @@ public class Caro extends GameLogic {
     public static final int TURN_TIME_LIMIT = 30, MATCH_TIME_LIMIT = 10 * 60;
 
     ArrayList<History> history;
-    History preMove;
-    History prePreMove;
+    History preMove = null;
+    History prePreMove = null;
     String[][] board;
 
     CountDownTimer turnTimer;
@@ -75,10 +75,9 @@ public class Caro extends GameLogic {
 
     public void addHistory(int row, int col, String playerEmail, int team) {
         History newHis = new History(row, col, playerEmail, team);
-        history.add(newHis);
         prePreMove = preMove;
-        preMove = newHis;
-        
+        preMove = history.size() >= 1 ? history.get(history.size() - 1) : null;
+        history.add(newHis);
     }
 
     public ArrayList<History> getHistory() {
@@ -87,10 +86,19 @@ public class Caro extends GameLogic {
 
     public boolean move(int row, int col, String playerEmail, int team) {
         // nếu người này đã đánh trước đó thì không cho đánh nữa
-        if (preMove != null && preMove.getPlayerEmail().equals(playerEmail) && prePreMove.getTeam() != team && prePreMove.getPlayerEmail().equals(playerEmail)) {
-            return false;
+//        if (preMove != null || (preMove.getPlayerEmail().equals(playerEmail) || preMove.getTeam() == team || prePreMove.getTeam() != team)) {
+//            return false;
+//        }
+        if (preMove != null) {
+            if (preMove.getPlayerEmail().equals(playerEmail) || preMove.getTeam() == team) {
+                return false;
+            }
+            if (prePreMove != null) {
+                if (prePreMove.getTeam() != team) {
+                    return false;
+                }
+            }
         }
-
         // nếu vị trí đánh nằm ngoài board
         if (row < 0 && row >= ROW && col < 0 && col >= COL) {
             return false;
@@ -101,7 +109,7 @@ public class Caro extends GameLogic {
             return false;
         }
 
-        board[row][col] = playerEmail;
+        board[row][col] = Integer.toString(team);
         addHistory(row, col, playerEmail, team);
         return true;
     }

@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import server.RunServer;
 import server.db.layers.BUS.GameMatchBUS;
 import server.db.layers.DAL.PlayerDAO;
@@ -494,6 +496,7 @@ public class GameClient implements Runnable {
                 // check move
                 ArrayList<GameClient> team1 = joinedRoom.getTeam1();
                 ArrayList<GameClient> team2 = joinedRoom.getTeam2();
+                
                 int team;
                 if (team1.contains(this)) team = 1;
                 else team = 2;
@@ -501,6 +504,7 @@ public class GameClient implements Runnable {
                 ArrayList<GameClient> loserTeam = new ArrayList<>();
                 if (caroGame.move(row, column, loginPlayer.getUsername(), team)) {
                     // restart turn timer
+                    System.out.println("username: "+loginPlayer.getUsername());
                     joinedRoom.gamelogic.restartTurnTimer();
 
                     // broadcast to all client in room movedata
@@ -560,11 +564,14 @@ public class GameClient implements Runnable {
                         caroGame.cancelTimer();
 
                         // broadcast to all client in room windata
-                        joinedRoom.broadcast(
+                        
+                            joinedRoom.broadcast(
                                 StreamData.Type.GAME_EVENT + ";"
                                 + StreamData.Type.WIN + ";"
-                                + loginPlayer.getUsername()
+                                + winnerTeam.stream().map(client -> client.loginPlayer.getUsername()).collect(Collectors.toList()).toString()
                         );
+                        
+                        
 
                     }
                 } else {
