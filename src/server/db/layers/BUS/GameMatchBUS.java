@@ -5,7 +5,7 @@
  */
 package server.db.layers.BUS;
 
-import server.db.layers.DAL.GameMatchDAL;
+import server.db.layers.DAL.GameMatchDAO;
 import server.db.layers.DTO.GameMatch;
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class GameMatchBUS {
 
     ArrayList<GameMatch> listGameMatch = new ArrayList<>();
-    GameMatchDAL gameMatchDAL = new GameMatchDAL();
+    GameMatchDAO gameMatchDAL = new GameMatchDAO();
 
     public GameMatchBUS() {
         readDB();

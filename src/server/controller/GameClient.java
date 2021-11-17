@@ -9,7 +9,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import server.RunServer;
 import server.db.layers.BUS.GameMatchBUS;
+import server.db.layers.DAL.GameMatchDAO;
 import server.db.layers.DAL.PlayerDAO;
 import server.db.layers.DTO.GameMatch;
 import server.db.layers.DTO.Player;
@@ -94,6 +97,10 @@ public class GameClient implements Runnable {
                         
                     case GET_PROFILE:
                         onReceiveGetProfile(received);
+                        break;
+                        
+                    case MATCH_HISTORY:
+                        onReceiveListHistory(received);
                         break;
 
                     case CREATE_ROOM:
@@ -303,6 +310,22 @@ public class GameClient implements Runnable {
 
         // send data
         sendData(StreamData.Type.LIST_ONLINE.name() + ";" + result.substring(0, result.length()-1));
+    }
+    
+    private void onReceiveListHistory(String receive) {
+        // prepare data
+        String result = "success;";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+        for(GameMatch gm: new GameMatchDAO().getListHistory(loginPlayer.getUsername())) {
+            result += gm.getUsername1() + ";" + gm.getUsername2() + ";" 
+                    + gm.getUsername3() + ";" + gm.getUsername4() + ";"
+                    + gm.getWinnerID() + ";" + gm.getWinnerID2() + ";"
+                    + gm.getPlayTime() + ";" + gm.getStartedTime().format(formatter)
+                    + ";" + gm.getTotalMove() + ";" + gm.getId() + ";";
+        }
+
+        // send data
+        sendData(StreamData.Type.MATCH_HISTORY.name() + ";" + result.substring(0, result.length()-1));
     }
 
     private void onReceiveCreateRoom(String received) {
