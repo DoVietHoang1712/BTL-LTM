@@ -216,9 +216,6 @@ public class SocketHandler {
             // chuyển scene
             RunClient.closeScene(RunClient.SceneName.LOGIN);
             RunClient.openScene(RunClient.SceneName.MAINMENU);
-
-            // tự động lấy danh sách phòng
-            listRoom();
         }
     }
 
@@ -254,8 +251,7 @@ public class SocketHandler {
     }
 
     private void onReceiveListOnline(String received) {
-        String[] splitted = received.split(";");
-        int listOnline = Integer.parseInt(splitted[1]);
+        RunClient.mainMenuScene.setListOnline(received);
     }
 
     // main menu

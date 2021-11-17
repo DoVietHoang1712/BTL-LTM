@@ -46,11 +46,10 @@ public class MainMenu extends javax.swing.JFrame {
     
     public void setUp() {
         RunClient.socketHandler.listRank();
-//        RunClient.socketHandler.listOnline();
+        RunClient.socketHandler.listOnline();
     }
     
     public void setListRank(String received) {
-        System.out.println("List Rank");
         String[] splitted = received.split(";");
         String status = splitted[1];
 
@@ -84,6 +83,43 @@ public class MainMenu extends javax.swing.JFrame {
                 vdata.add(vrow);
             }
             tableRank.setModel(new DefaultTableModel(vdata, vheader));
+        }
+    }
+    
+    public void setListOnline(String received) {
+        String[] splitted = received.split(";");
+        String status = splitted[1];
+
+        if (status.equals("failed")) {
+
+        } else if (status.equals("success")) {
+            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
+            Vector vheader = new Vector();
+            vheader.add("Username");
+            vheader.add("Elo");
+            vheader.add("Wins");
+            vheader.add("Lose");
+
+            Vector vdata = new Vector();
+
+            // i += 3: 3 là số cột trong bảng
+            // i = 3; i < roomCount + 3: dữ liệu phòng bắt đầu từ index 3 trong mảng splitted
+            for (int i = 2; i < splitted.length - 3; i += 4) {
+
+                String username = splitted[i];
+                String elo = splitted[i + 1];
+                String wins = splitted[i + 2];
+                String lose = splitted[i + 3];
+
+                Vector vrow = new Vector();
+                vrow.add(username);
+                vrow.add(elo);
+                vrow.add(wins);
+                vrow.add(lose);
+
+                vdata.add(vrow);
+            }
+            tableOnline.setModel(new DefaultTableModel(vdata, vheader));
         }
     }
 
@@ -222,7 +258,8 @@ public class MainMenu extends javax.swing.JFrame {
         btnRefreshListRoom = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableOnline = new javax.swing.JTable();
+        btnRefreshListPlayer = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRank = new javax.swing.JTable();
@@ -429,7 +466,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         tpRoomAndUser.addTab("Danh sách phòng", jPanel5);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableOnline.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -440,23 +477,37 @@ public class MainMenu extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tableOnline);
+
+        btnRefreshListPlayer.setText("Làm mới");
+        btnRefreshListPlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshListPlayerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(23, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnRefreshListPlayer)
+                        .addGap(18, 18, 18))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(btnRefreshListPlayer)
+                .addGap(24, 24, 24))
         );
 
         tpRoomAndUser.addTab("Người chơi", jPanel3);
@@ -480,6 +531,11 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tableRank);
 
         btnRefreshRank.setText("Làm mới");
+        btnRefreshRank.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshRankActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -526,7 +582,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(plBtns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(plFindingMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(106, 106, 106)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tpRoomAndUser, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -550,26 +606,34 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        RunClient.socketHandler.logout();
-    }//GEN-LAST:event_btnLogoutActionPerformed
+    private void btnRefreshRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshRankActionPerformed
+        // TODO add your handling code here:
+        RunClient.socketHandler.listRank();
+    }//GEN-LAST:event_btnRefreshRankActionPerformed
 
-    private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
-        RunClient.openScene(RunClient.SceneName.PROFILE);
-        RunClient.profileScene.loadProfileData(RunClient.socketHandler.getLoginEmail());
-    }//GEN-LAST:event_btnProfileActionPerformed
+    private void btnRefreshListPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshListPlayerActionPerformed
+        // TODO add your handling code here:
+        RunClient.socketHandler.listOnline();
+    }//GEN-LAST:event_btnRefreshListPlayerActionPerformed
 
-    private void btnFindMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindMatchActionPerformed
-        // chỉ gửi yêu cầu lên server chứ ko đổi giao diện ngay
-        // socketHandler sẽ đọc kết quả trả về từ server và quyết định có đổi stateDisplay hay không
-        RunClient.socketHandler.findMatch();
-    }//GEN-LAST:event_btnFindMatchActionPerformed
+    private void btnRefreshListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshListRoomActionPerformed
+        RunClient.socketHandler.listRoom();
+    }//GEN-LAST:event_btnRefreshListRoomActionPerformed
 
     private void btnCancelFindMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelFindMatchActionPerformed
         // chỉ gửi yêu cầu lên server chứ ko đổi giao diện ngay
         // socketHandler sẽ đọc kết quả trả về từ server và quyết định có đổi stateDisplay hay không
         RunClient.socketHandler.cancelFindMatch();
     }//GEN-LAST:event_btnCancelFindMatchActionPerformed
+
+    private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
+        RunClient.openScene(RunClient.SceneName.PROFILE);
+        RunClient.profileScene.loadProfileData(RunClient.socketHandler.getLoginEmail());
+    }//GEN-LAST:event_btnProfileActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        RunClient.socketHandler.logout();
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnWatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWatchActionPerformed
         // https://stackoverflow.com/a/38981623
@@ -581,17 +645,19 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnWatchActionPerformed
 
-    private void btnRefreshListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshListRoomActionPerformed
-        RunClient.socketHandler.listRoom();
-    }//GEN-LAST:event_btnRefreshListRoomActionPerformed
+    private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnJoinActionPerformed
+
+    private void btnFindMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindMatchActionPerformed
+        // chỉ gửi yêu cầu lên server chứ ko đổi giao diện ngay
+        // socketHandler sẽ đọc kết quả trả về từ server và quyết định có đổi stateDisplay hay không
+        RunClient.socketHandler.findMatch();
+    }//GEN-LAST:event_btnFindMatchActionPerformed
 
     private void btnCreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateRoomActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCreateRoomActionPerformed
-
-    private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnJoinActionPerformed
 
     /**
      * @param args the command line arguments
@@ -636,6 +702,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnJoin;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnProfile;
+    private javax.swing.JButton btnRefreshListPlayer;
     private javax.swing.JButton btnRefreshListRoom;
     private javax.swing.JButton btnRefreshRank;
     private javax.swing.JButton btnWatch;
@@ -649,10 +716,10 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbFindMatch;
     private javax.swing.JPanel plBtns;
     private javax.swing.JPanel plFindingMatch;
+    private javax.swing.JTable tableOnline;
     private javax.swing.JTable tableRank;
     private javax.swing.JTable tbListRoom;
     private javax.swing.JTabbedPane tpRoomAndUser;

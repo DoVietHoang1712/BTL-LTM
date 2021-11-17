@@ -279,7 +279,16 @@ public class GameClient implements Runnable {
     }
 
     private void onReceiveListOnline(String received) {
+        // prepare data
+        String result = "success;";
+        
+        for(GameClient gc: RunServer.clientManager.clients) {
+            Player p = gc.loginPlayer;
+            result += p.getUsername() + ";" + p.getElo() + ";" + p.getWinCount() +";" + (p.getMatchCount() - p.getWinCount()) + ";";
+        }
 
+        // send data
+        sendData(StreamData.Type.LIST_ONLINE.name() + ";" + result.substring(0, result.length()-1));
     }
 
     private void onReceiveCreateRoom(String received) {
