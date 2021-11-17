@@ -80,24 +80,12 @@ public class GameClient implements Runnable {
                         onReceiveLogout(received);
                         break;
 
-                    case LIST_ROOM:
-                        onReceiveListRoom(received);
+                    case LIST_RANK:
+                        onReceiveListRank(received);
                         break;
 
                     case LIST_ONLINE:
                         onReceiveListOnline(received);
-                        break;
-
-                    case CREATE_ROOM:
-                        onReceiveCreateRoom(received);
-                        break;
-
-                    case JOIN_ROOM:
-                        onReceiveJoinRoom(received);
-                        break;
-
-                    case WATCH_ROOM:
-                        onReceiveWatchRoom(received);
                         break;
 
                     case FIND_MATCH:
@@ -106,10 +94,6 @@ public class GameClient implements Runnable {
 
                     case CANCEL_FIND_MATCH:
                         onReceiveCancelFindMatch(received);
-                        break;
-
-                    case REQUEST_PAIR_MATCH:
-                        onReceiveRequestPairMatch(received);
                         break;
 
                     case RESULT_PAIR_MATCH:
@@ -138,14 +122,8 @@ public class GameClient implements Runnable {
                     case GAME_EVENT:
                         onReceiveGameEvent(received);
                         break;
-                    case INVITE:
-                        onReceiveInvite(received);
-                        break;
                     case ACCEPTED:
                         onReceiveAccepted(received);
-                        break;
-                    case REJECTED:
-                        onReceiveRejected(received);
                         break;
                     case EXIT:
                         running = false;
@@ -171,14 +149,6 @@ public class GameClient implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    private void onReceiveInvite(String received) {
-        
-    }
-    
-    private void onReceiveRejected(String received) {
-        
     }
     
     private void onReceiveAccepted(String received) {
@@ -238,48 +208,21 @@ public class GameClient implements Runnable {
     }
 
     // main menu
-    private void onReceiveListRoom(String received) {
+    private void onReceiveListRank(String received) {
         // prepare data
         String result = "success;";
-        ArrayList<Room> listRoom = RunServer.roomManager.getRooms();
-        int roomCount = listRoom.size();
-
-        result += roomCount + ";";
-
-        for (Room r : listRoom) {
-            String pairData
-                    = ((r.getClient1() != null) ? r.getClient1().getLoginPlayer().getUsername(): "_")
-                    + " VS "
-                    + ((r.getClient2() != null) ? r.getClient2().getLoginPlayer().getUsername() : "_");
-
-            result += r.getId() + ";"
-                    + pairData + ";"
-                    + r.clients.size() + ";";
+        
+        ArrayList<Player> players = (ArrayList<Player>) new PlayerDAO().listRank();
+        for(Player p: players) {
+            result += p.getUsername() + ";" + p.getElo() + ";" + p.getWinCount() +";" + (p.getMatchCount() - p.getWinCount()) + ";";
         }
 
         // send data
-        sendData(StreamData.Type.LIST_ROOM.name() + ";" + result);
+        sendData(StreamData.Type.LIST_RANK.name() + ";" + result.substring(0, result.length()-1));
     }
 
     private void onReceiveListOnline(String received) {
-
-    }
-
-    private void onReceiveCreateRoom(String received) {
-
-    }
-
-    private void onReceiveJoinRoom(String received) {
-
-    }
-
-    private void onReceiveWatchRoom(String received) {
-        String[] splitted = received.split(";");
-        String roomId = splitted[1];
-
-        String status = joinRoom(roomId, true);
-
-        sendData(StreamData.Type.WATCH_ROOM.name() + ";" + status);
+        sendData(StreamData.Type.LIST_ONLINE.name()+";"+RunServer.clientManager.clients.size());
     }
 
     // pair match
@@ -341,58 +284,6 @@ public class GameClient implements Runnable {
 
         // báo cho client để tắt giao diện đang tìm phòng
         sendData(StreamData.Type.CANCEL_FIND_MATCH.name() + ";success");
-    }
-
-    private void onReceiveRequestPairMatch(String received) {
-        String[] splitted = received.split(";");
-        String requestResult = splitted[1];
-
-        // save accept pair status
-        this.acceptPairMatchStatus = requestResult;
-
-        // get competitor
-        if (cCompetitor == null) {
-            sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";failed;" + Code.COMPETITOR_LEAVE);
-            return;
-        }
-
-        // if once say no
-        if (requestResult.equals("no")) {
-            // TODO tru diem
-            this.loginPlayer.setElo(this.loginPlayer.getElo()- 1);
-            new PlayerDAO().update(this.loginPlayer);
-
-            // send data
-            this.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";failed;" + Code.YOU_CHOOSE_NO);
-            cCompetitor.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";failed;" + Code.COMPETITOR_CHOOSE_NO);
-
-            // reset acceptPairMatchStatus
-            this.acceptPairMatchStatus = "_";
-            cCompetitor.acceptPairMatchStatus = "_";
-        }
-
-        // if both say yes
-        if (requestResult.equals("yes") && cCompetitor.acceptPairMatchStatus.equals("yes")) {
-            // send success pair match
-            this.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";success");
-            cCompetitor.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";success");
-
-            // create new room
-            Room newRoom = RunServer.roomManager.createRoom();
-
-            // join room
-            String thisStatus = this.joinRoom(newRoom, false);
-            String competitorStatus = cCompetitor.joinRoom(newRoom, false);
-
-            // send join room status to client
-            sendData(StreamData.Type.JOIN_ROOM.name() + ";" + thisStatus);
-            cCompetitor.sendData(StreamData.Type.JOIN_ROOM.name() + ";" + competitorStatus);
-
-            // TODO update list room to all client
-            // reset acceptPairMatchStatus
-            this.acceptPairMatchStatus = "_";
-            cCompetitor.acceptPairMatchStatus = "_";
-        }
     }
 
     // in game

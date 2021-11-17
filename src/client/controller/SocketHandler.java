@@ -98,25 +98,17 @@ public class SocketHandler {
                     case LOGOUT:
                         onReceiveLogout(received);
                         break;
+                        
+                    case GET_PROFILE:
+                        onReceiveGetProfile(received);
+                        break;
 
-                    case LIST_ROOM:
-                        onReceiveListRoom(received);
+                    case LIST_RANK:
+                        onReceiveListRank(received);
                         break;
 
                     case LIST_ONLINE:
                         onReceiveListOnline(received);
-                        break;
-
-                    case CREATE_ROOM:
-                        onReceiveCreateRoom(received);
-                        break;
-
-                    case JOIN_ROOM:
-                        onReceiveJoinRoom(received);
-                        break;
-
-                    case WATCH_ROOM:
-                        onReceiveWatchRoom(received);
                         break;
 
                     case FIND_MATCH:
@@ -151,14 +143,6 @@ public class SocketHandler {
                         onReceiveCloseRoom(received);
                         break;
 
-                    case GET_PROFILE:
-                        onReceiveGetProfile(received);
-                        break;
-
-                    case EDIT_PROFILE:
-                        onReceivedEditProfile(received);
-                        break;
-
                     case CHANGE_PASSWORD:
                         onReceiveChangePassword(received);
                         break;
@@ -189,7 +173,7 @@ public class SocketHandler {
         // alert if connect interup
         JOptionPane.showMessageDialog(null, "Mất kết nối tới server", "Lỗi", JOptionPane.ERROR_MESSAGE);
         RunClient.closeAllScene();
-        RunClient.openScene(RunClient.SceneName.CONNECTSERVER);
+        RunClient.openScene(RunClient.SceneName.LOGIN);
     }
 
     private void onReceiveLogin(String received) {
@@ -214,7 +198,7 @@ public class SocketHandler {
             RunClient.openScene(RunClient.SceneName.MAINMENU);
 
             // tự động lấy danh sách phòng
-            listRoom();
+            listRank();
         }
     }
 
@@ -246,49 +230,14 @@ public class SocketHandler {
     }
 
     // main menu
-    private void onReceiveListRoom(String received) {
-        String[] splitted = received.split(";");
-        String status = splitted[1];
-
-        if (status.equals("failed")) {
-
-        } else if (status.equals("success")) {
-            int roomCount = Integer.parseInt(splitted[2]);
-
-            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
-            Vector vheader = new Vector();
-            vheader.add("Mã");
-            vheader.add("Cặp đấu");
-            vheader.add("Số người");
-
-            Vector vdata = new Vector();
-
-            // i += 3: 3 là số cột trong bảng
-            // i = 3; i < roomCount + 3: dữ liệu phòng bắt đầu từ index 3 trong mảng splitted
-            for (int i = 3; i < roomCount + 3; i += 3) {
-
-                String roomId = splitted[i];
-                String title = splitted[i + 1];
-                String clientCount = splitted[i + 2];
-
-                Vector vrow = new Vector();
-                vrow.add(roomId);
-                vrow.add(title);
-                vrow.add(clientCount);
-
-                vdata.add(vrow);
-            }
-
-            RunClient.mainMenuScene.setListRoom(vdata, vheader);
-        }
+    private void onReceiveListRank(String received) {
+        RunClient.mainMenuScene.setListRank(received);
     }
 
     private void onReceiveListOnline(String received) {
-
-    }
-
-    private void onReceiveCreateRoom(String received) {
-
+        String[] splitted = received.split(";");
+        int listOnline = Integer.parseInt(splitted[1]);
+        RunClient.mainMenuScene.setOnline(listOnline);
     }
 
     private void onReceiveJoinRoom(String received) {
@@ -305,19 +254,6 @@ public class SocketHandler {
 
         // get room data
         dataRoom(roomId);
-    }
-
-    private void onReceiveWatchRoom(String received) {
-        String[] splitted = received.split(";");
-        String status = splitted[1];
-
-        if (status.equals("failed")) {
-            String failedMsg = splitted[2];
-            JOptionPane.showMessageDialog(RunClient.mainMenuScene, failedMsg, "Lỗi", JOptionPane.ERROR_MESSAGE);
-
-        } else if (status.equals("success")) {
-            onReceiveJoinRoom(received);
-        }
     }
 
     // pair match
@@ -448,7 +384,7 @@ public class SocketHandler {
             RunClient.openScene(RunClient.SceneName.MAINMENU);
 
             // get list room again
-            listRoom();
+            listRank();
         }
     }
 
@@ -502,28 +438,6 @@ public class SocketHandler {
 
             // show data to UI
             RunClient.profileScene.setProfileData(p);
-        }
-    }
-
-    private void onReceivedEditProfile(String received) {
-        String[] splitted = received.split(";");
-        String status = splitted[1];
-
-        // turn off loading
-        RunClient.profileScene.setProfileSaveLoading(false);
-
-        if (status.equals("failed")) {
-            String failedMsg = splitted[2];
-            JOptionPane.showMessageDialog(RunClient.profileScene, failedMsg, "Lỗi", JOptionPane.ERROR_MESSAGE);
-
-        } else if (status.equals("success")) {
-            JOptionPane.showMessageDialog(RunClient.profileScene, "Đổi thông tin thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-
-            // lưu lại email
-            this.loginUsername = splitted[2];
-
-            // load lại thông tin cá nhân mới - có thể ko cần! nhưng cứ load lại cho chắc
-            getProfile(this.loginUsername);
         }
     }
 
@@ -621,8 +535,12 @@ public class SocketHandler {
     }
 
     // main menu
-    public void listRoom() {
-        sendData(StreamData.Type.LIST_ROOM.name());
+    public void listRank() {
+        sendData(StreamData.Type.LIST_RANK.name());
+    }
+    
+    public void listOnline() {
+        sendData(StreamData.Type.LIST_ONLINE.name());
     }
 
     public void watchRoom(String roomId) {
@@ -636,14 +554,6 @@ public class SocketHandler {
 
     public void cancelFindMatch() {
         sendData(StreamData.Type.CANCEL_FIND_MATCH.name());
-    }
-
-    public void declinePairMatch() {
-        sendData(StreamData.Type.REQUEST_PAIR_MATCH.name() + ";no");
-    }
-
-    public void acceptPairMatch() {
-        sendData(StreamData.Type.REQUEST_PAIR_MATCH.name() + ";yes");
     }
 
     // in game
@@ -716,7 +626,6 @@ public class SocketHandler {
     public void sendData(String data) {
         try {
             dos.writeUTF(data);
-
         } catch (IOException ex) {
             Logger.getLogger(SocketHandler.class
                     .getName()).log(Level.SEVERE, null, ex);

@@ -19,11 +19,11 @@ import java.util.logging.Logger;
  *
  * @author nguye
  */
-public class GameMatchDAL {
+public class GameMatchDAO {
 
     MysqlConnector connector;
 
-    public GameMatchDAL() {
+    public GameMatchDAO() {
 
     }
 
@@ -79,7 +79,7 @@ public class GameMatchDAL {
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
-            Logger.getLogger(GameMatchDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connector.closeConnection();
         }
@@ -112,7 +112,7 @@ public class GameMatchDAL {
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
-            Logger.getLogger(GameMatchDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connector.closeConnection();
         }
@@ -132,7 +132,7 @@ public class GameMatchDAL {
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
-            Logger.getLogger(GameMatchDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connector.closeConnection();
         }
