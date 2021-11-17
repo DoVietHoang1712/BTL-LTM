@@ -262,13 +262,13 @@ public class InGame extends javax.swing.JFrame {
     // change turn sang cho đối thủ của email đầu vào
     public void changeTurnFrom(String email) {
         if (email.equals(player1.getUsername())) {
-            setTurn(player3.getUsername());
-        } else if (email.equals(player2.getUsername())) {
-            setTurn(player4.getUsername());
-        } else if (email.equals(player3.getUsername())) {
-            setTurn(player2.getUsername());
-        } else if (email.equals(player4.getUsername())) {
             setTurn(player1.getUsername());
+        } else if (email.equals(player2.getUsername())) {
+            setTurn(player2.getUsername());
+        } else if (email.equals(player3.getUsername())) {
+            setTurn(player3.getUsername());
+        } else if (email.equals(player4.getUsername())) {
+            setTurn(player4.getUsername());
         }
     }
 

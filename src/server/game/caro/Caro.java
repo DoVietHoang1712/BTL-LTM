@@ -75,9 +75,9 @@ public class Caro extends GameLogic {
 
     public void addHistory(int row, int col, String playerEmail, int team) {
         History newHis = new History(row, col, playerEmail, team);
-        prePreMove = preMove;
-        preMove = history.size() >= 1 ? history.get(history.size() - 1) : null;
         history.add(newHis);
+        prePreMove = preMove;
+        preMove = newHis;
     }
 
     public ArrayList<History> getHistory() {
@@ -94,10 +94,11 @@ public class Caro extends GameLogic {
                 return false;
             }
             if (prePreMove != null) {
-                if (prePreMove.getTeam() != team) {
+                if (prePreMove.getPlayerEmail() != playerEmail) {
                     return false;
                 }
             }
+            
         }
         // nếu vị trí đánh nằm ngoài board
         if (row < 0 && row >= ROW && col < 0 && col >= COL) {
