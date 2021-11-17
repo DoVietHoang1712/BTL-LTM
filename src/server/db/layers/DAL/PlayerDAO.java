@@ -123,7 +123,7 @@ public class PlayerDAO {
                     + "elo=?,"
                     + "password=?,"
                     + "matchCount=?,"
-                    + "winCount=?,"
+                    + "winCount=?"
                     + " WHERE username=?";
 
             PreparedStatement stm = connection.prepareStatement(qry);

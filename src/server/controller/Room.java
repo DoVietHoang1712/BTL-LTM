@@ -115,14 +115,14 @@ public class Room {
                         (Callable) () -> {
 
                             // tinh diem hoa
-                            new GameMatchBUS().add(new GameMatch(
-                                    client1.getLoginPlayer().getUsername(),
-                                    client2.getLoginPlayer().getUsername(),
-                                    "",
-                                    gamelogic.getMatchTimer().getCurrentTick(),
-                                    gamelogic.getHistory().size(),
-                                    startedTime
-                            ));
+//                            new GameMatchBUS().add(new GameMatch(
+//                                    client1.getLoginPlayer().getUsername(),
+//                                    client2.getLoginPlayer().getUsername(),
+//                                    "",
+//                                    gamelogic.getMatchTimer().getCurrentTick(),
+//                                    gamelogic.getHistory().size(),
+//                                    startedTime
+//                            ));
 
                             broadcast(
                                     StreamData.Type.GAME_EVENT + ";"

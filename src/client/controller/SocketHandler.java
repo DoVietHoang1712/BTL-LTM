@@ -152,7 +152,7 @@ public class SocketHandler {
                         break;
 
                     case CHAT_ROOM:
-                        // onReceiveChatRoom(received);
+                        onReceiveChatRoom(received);
                         break;
 
                     case LEAVE_ROOM:
@@ -443,6 +443,7 @@ public class SocketHandler {
 
     private void onReceiveChatRoom(String received) {
         String[] splitted = received.split(";");
+        System.out.println(splitted[1] + splitted[2] + splitted[3]);
         ChatItem c = new ChatItem(splitted[1], splitted[2], splitted[3]);
         RunClient.inGameScene.addChat(c);
     }

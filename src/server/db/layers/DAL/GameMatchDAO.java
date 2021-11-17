@@ -49,7 +49,7 @@ public class GameMatchDAO {
                             rs.getString("winnerID2"),
                             rs.getInt("playTime"),
                             rs.getInt("totalMove"),
-                            LocalDateTime.parse(rs.getString("StartedTime"))
+                            LocalDateTime.parse(rs.getString("startedTime"))
                     );
 
                     result.add(g);
@@ -89,7 +89,7 @@ public class GameMatchDAO {
                             rs.getString("winnerID2"),
                             rs.getInt("playTime"),
                             rs.getInt("totalMove"),
-                            LocalDateTime.parse(rs.getString("StartedTime"))
+                            LocalDateTime.parse(rs.getString("startedTime"))
                     );
                     result.add(g);
                 }
@@ -113,7 +113,7 @@ public class GameMatchDAO {
         connector = new MysqlConnector();
 
         try {
-            String sql = "INSERT INTO GameMatch(username1,username2,usernam3,username4,winnerID,winnerID2,playTime,totalMove,startedTime) "
+            String sql = "INSERT INTO gamematch(username1,username2,username3,username4,winnerID,winnerID2,playTime,totalMove,startedTime) "
                     + "VALUE(?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = connector.getConnection().prepareStatement(sql);
             stm.setString(1, m.getUsername1());

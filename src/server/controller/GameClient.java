@@ -168,7 +168,7 @@ public class GameClient implements Runnable {
 
             } catch (IOException ex) {
                 // leave room if needed
-                onReceiveLeaveRoom("");
+                // onReceiveLeaveRoom("");
                 break;
             }
         }
@@ -698,11 +698,11 @@ public class GameClient implements Runnable {
             this.joinedRoom = room;
 
             // thông báo với mọi người trong phòng
-            this.joinedRoom.broadcast(StreamData.Type.CHAT_ROOM + ";"
-                    + CustumDateTimeFormatter.getCurrentTimeFormatted()
-                    + ";SERVER;"
-                    + loginPlayer.getUsername()+ " đã vào phòng."
-            );
+//            this.joinedRoom.broadcast(StreamData.Type.CHAT_ROOM + ";"
+//                    + CustumDateTimeFormatter.getCurrentTimeFormatted()
+//                    + ";SERVER;"
+//                    + loginPlayer.getUsername()+ " đã vào phòng."
+//            );
             if (this.joinedRoom.getTeam1().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this)) {
                 ArrayList<GameClient> clients = this.joinedRoom.getTeam1();
                 System.out.println(this.loginPlayer.getUsername() + " " +"team 1");
