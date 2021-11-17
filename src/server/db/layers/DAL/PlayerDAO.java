@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -175,5 +176,40 @@ public class PlayerDAO {
 
     public String changePassword(String username, String oldPassword, String newPassword) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    public List<Player> listRank() {
+        ArrayList<Player> result = new ArrayList<>();
+        Connection connection = MysqlConnector.getConnection();
+        try {
+            String qry = "SELECT * FROM Player Order by Elo Desc Limit 10;";
+            PreparedStatement stm = connection.prepareStatement(qry);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    Player p = new Player(
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getInt("Elo"),
+                            rs.getInt("MatchCount"),
+                            rs.getInt("WinCount")
+                    );
+                    result.add(p);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error while trying to read Players info from database!");
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PlayerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return result;
     }
 }

@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 public class RunClient {
 
     public enum SceneName {
-        CONNECTSERVER,
         LOGIN,
         SIGNUP,
         MAINMENU,
@@ -60,6 +59,7 @@ public class RunClient {
                     break;
                 case MAINMENU:
                     mainMenuScene = new MainMenu();
+                    mainMenuScene.setUp();
                     mainMenuScene.setVisible(true);
                     break;
                 case CHANGEPASSWORD:
@@ -108,12 +108,12 @@ public class RunClient {
     }
 
     public static void closeAllScene() {
-        loginScene.dispose();
-        signupScene.dispose();
-        mainMenuScene.dispose();
-        changePasswordScene.dispose();
-        inGameScene.dispose();
-        profileScene.dispose();
+        if(loginScene != null) loginScene.dispose();
+        if(signupScene != null) signupScene.dispose();
+        if(mainMenuScene != null) mainMenuScene.dispose();
+        if(changePasswordScene != null) changePasswordScene.dispose();
+        if(inGameScene != null) inGameScene.dispose();
+        if(profileScene != null) profileScene.dispose();
     }
 
     public static void main(String[] args) {

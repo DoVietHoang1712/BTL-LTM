@@ -65,7 +65,7 @@ public class GameClient implements Runnable {
 
                 // process received data
                 StreamData.Type type = StreamData.getTypeFromData(received);
-
+                System.out.println("Server received: " + type);
                 switch (type) {
 
                     case LOGIN:
@@ -78,6 +78,10 @@ public class GameClient implements Runnable {
 
                     case LOGOUT:
                         onReceiveLogout(received);
+                        break;
+                        
+                    case LIST_RANK:
+                        onReceiveListRank(received);
                         break;
 
                     case LIST_ROOM:
@@ -235,6 +239,19 @@ public class GameClient implements Runnable {
         // TODO broadcast to all clients
         // send status
         sendData(StreamData.Type.LOGOUT.name() + ";success");
+    }
+    
+    private void onReceiveListRank(String received) {
+        // prepare data
+        String result = "success;";
+        
+        ArrayList<Player> players = (ArrayList<Player>) new PlayerDAO().listRank();
+        for(Player p: players) {
+            result += p.getUsername() + ";" + p.getElo() + ";" + p.getWinCount() +";" + (p.getMatchCount() - p.getWinCount()) + ";";
+        }
+
+        // send data
+        sendData(StreamData.Type.LIST_RANK.name() + ";" + result.substring(0, result.length()-1));
     }
 
     // main menu

@@ -102,6 +102,10 @@ public class SocketHandler {
                     case LIST_ROOM:
                         onReceiveListRoom(received);
                         break;
+                        
+                    case LIST_RANK:
+                        onReceiveListRank(received);
+                        break;
 
                     case LIST_ONLINE:
                         onReceiveListOnline(received);
@@ -189,7 +193,7 @@ public class SocketHandler {
         // alert if connect interup
         JOptionPane.showMessageDialog(null, "Mất kết nối tới server", "Lỗi", JOptionPane.ERROR_MESSAGE);
         RunClient.closeAllScene();
-        RunClient.openScene(RunClient.SceneName.CONNECTSERVER);
+        RunClient.openScene(RunClient.SceneName.LOGIN);
     }
 
     private void onReceiveLogin(String received) {
@@ -244,6 +248,15 @@ public class SocketHandler {
         RunClient.closeAllScene();
         RunClient.openScene(RunClient.SceneName.LOGIN);
     }
+    
+    private void onReceiveListRank(String received) {
+        RunClient.mainMenuScene.setListRank(received);
+    }
+
+    private void onReceiveListOnline(String received) {
+        String[] splitted = received.split(";");
+        int listOnline = Integer.parseInt(splitted[1]);
+    }
 
     // main menu
     private void onReceiveListRoom(String received) {
@@ -281,10 +294,6 @@ public class SocketHandler {
 
             RunClient.mainMenuScene.setListRoom(vdata, vheader);
         }
-    }
-
-    private void onReceiveListOnline(String received) {
-
     }
 
     private void onReceiveCreateRoom(String received) {
@@ -618,6 +627,16 @@ public class SocketHandler {
 
         // send data
         sendData(data);
+    }
+    
+    
+    
+    public void listRank() {
+        sendData(StreamData.Type.LIST_RANK.name());
+    }
+    
+    public void listOnline() {
+        sendData(StreamData.Type.LIST_ONLINE.name());
     }
 
     // main menu

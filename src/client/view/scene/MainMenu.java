@@ -43,6 +43,49 @@ public class MainMenu extends javax.swing.JFrame {
         // default to hidden
         setDisplayState(State.DEFAULT);
     }
+    
+    public void setUp() {
+        RunClient.socketHandler.listRank();
+//        RunClient.socketHandler.listOnline();
+    }
+    
+    public void setListRank(String received) {
+        System.out.println("List Rank");
+        String[] splitted = received.split(";");
+        String status = splitted[1];
+
+        if (status.equals("failed")) {
+
+        } else if (status.equals("success")) {
+            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
+            Vector vheader = new Vector();
+            vheader.add("Username");
+            vheader.add("Elo");
+            vheader.add("Wins");
+            vheader.add("Lose");
+
+            Vector vdata = new Vector();
+
+            // i += 3: 3 là số cột trong bảng
+            // i = 3; i < roomCount + 3: dữ liệu phòng bắt đầu từ index 3 trong mảng splitted
+            for (int i = 2; i < splitted.length - 3; i += 4) {
+
+                String username = splitted[i];
+                String elo = splitted[i + 1];
+                String wins = splitted[i + 2];
+                String lose = splitted[i + 3];
+
+                Vector vrow = new Vector();
+                vrow.add(username);
+                vrow.add(elo);
+                vrow.add(wins);
+                vrow.add(lose);
+
+                vdata.add(vrow);
+            }
+            tableRank.setModel(new DefaultTableModel(vdata, vheader));
+        }
+    }
 
     public void setListRoom(Vector vdata, Vector vheader) {
         tbListRoom.setModel(new DefaultTableModel(vdata, vheader));
@@ -50,7 +93,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     public void foundMatch(String competitorName) {
         setDisplayState(State.WAITING_ACCEPT);
-        lbFoundMatch.setText("Đã tìm thấy đối thủ " + competitorName + " . Vào ngay?");
+//        lbFoundMatch.setText("Đã tìm thấy đối thủ " + competitorName + " . Vào ngay?");
     }
 
     private void stopAcceptPairMatchTimer() {
@@ -76,7 +119,7 @@ public class MainMenu extends javax.swing.JFrame {
                 },
                 // tick callback
                 (Callable) () -> {
-                    lbTimerPairMatch.setText(acceptPairMatchTimer.getCurrentTick() + "s");
+//                    lbTimerPairMatch.setText(acceptPairMatchTimer.getCurrentTick() + "s");
                     return null;
                 },
                 // tick interval
@@ -110,10 +153,10 @@ public class MainMenu extends javax.swing.JFrame {
 
         // mở hết lên
         LookAndFeel.enableComponents(plBtns, true);
-        plFoundMatch.setVisible(true);
+//        plFoundMatch.setVisible(true);
         plFindingMatch.setVisible(true);
-        btnAcceptPairMatch.setEnabled(true);
-        btnDeclinePairMatch.setEnabled(true);
+//        btnAcceptPairMatch.setEnabled(true);
+//        btnDeclinePairMatch.setEnabled(true);
         btnLogout.setEnabled(true);
 
         // xong đóng từng cái tùy theo state
@@ -122,14 +165,12 @@ public class MainMenu extends javax.swing.JFrame {
                 stopWaitingPairMatchTimer();
                 stopAcceptPairMatchTimer();
                 plFindingMatch.setVisible(false);
-                plFoundMatch.setVisible(false);
                 break;
 
             case FINDING_MATCH:
                 startWaitingPairMatchTimer();
                 stopAcceptPairMatchTimer();
                 LookAndFeel.enableComponents(plBtns, false);
-                plFoundMatch.setVisible(false);
                 btnLogout.setEnabled(false);
                 break;
 
@@ -146,10 +187,7 @@ public class MainMenu extends javax.swing.JFrame {
                 LookAndFeel.enableComponents(plBtns, false);
                 pairAcceptChoosed = true;
                 plFindingMatch.setVisible(false);
-                btnAcceptPairMatch.setEnabled(false);
-                btnDeclinePairMatch.setEnabled(false);
                 btnLogout.setEnabled(false);
-                lbFoundMatch.setText("Đang chờ đối thủ..");
                 break;
         }
     }
@@ -175,9 +213,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnLogout = new javax.swing.JButton();
         btnProfile = new javax.swing.JButton();
         plFindingMatch = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar();
         lbFindMatch = new javax.swing.JLabel();
-        jProgressBar2 = new javax.swing.JProgressBar();
         btnCancelFindMatch = new javax.swing.JButton();
         tpRoomAndUser = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
@@ -185,14 +221,12 @@ public class MainMenu extends javax.swing.JFrame {
         tbListRoom = new javax.swing.JTable();
         btnRefreshListRoom = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
-        plFoundMatch = new javax.swing.JPanel();
-        lbFoundMatch = new javax.swing.JLabel();
-        btnDeclinePairMatch = new javax.swing.JButton();
-        btnAcceptPairMatch = new javax.swing.JButton();
-        lbTimerPairMatch = new javax.swing.JLabel();
+        tableRank = new javax.swing.JTable();
+        btnRefreshRank = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -312,13 +346,9 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jProgressBar1.setIndeterminate(true);
-
         lbFindMatch.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbFindMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbFindMatch.setText("Đang tìm trận...");
-
-        jProgressBar2.setIndeterminate(true);
 
         btnCancelFindMatch.setText("Hủy");
         btnCancelFindMatch.addActionListener(new java.awt.event.ActionListener() {
@@ -332,17 +362,13 @@ public class MainMenu extends javax.swing.JFrame {
         plFindingMatchLayout.setHorizontalGroup(
             plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(plFindingMatchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelFindMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(5, 5, 5))
-            .addGroup(plFindingMatchLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(lbFindMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbFindMatch, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(plFindingMatchLayout.createSequentialGroup()
+                .addGap(175, 175, 175)
+                .addComponent(btnCancelFindMatch)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         plFindingMatchLayout.setVerticalGroup(
             plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,10 +376,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbFindMatch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCancelFindMatch)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnCancelFindMatch)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -406,93 +429,80 @@ public class MainMenu extends javax.swing.JFrame {
 
         tpRoomAndUser.addTab("Danh sách phòng", jPanel5);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList1);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
-        jButton1.setText("Xem thông tin");
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 338, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         tpRoomAndUser.addTab("Người chơi", jPanel3);
 
-        lbFoundMatch.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        lbFoundMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbFoundMatch.setText("Đã tìm thấy đối thủ ... Vào ngay?");
+        tableRank.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        btnDeclinePairMatch.setText("Từ chối");
-        btnDeclinePairMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeclinePairMatchActionPerformed(evt);
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        jScrollPane2.setViewportView(tableRank);
 
-        btnAcceptPairMatch.setText("Chấp nhận");
-        btnAcceptPairMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAcceptPairMatchActionPerformed(evt);
-            }
-        });
+        btnRefreshRank.setText("Làm mới");
 
-        lbTimerPairMatch.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        lbTimerPairMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTimerPairMatch.setText("15s");
-
-        javax.swing.GroupLayout plFoundMatchLayout = new javax.swing.GroupLayout(plFoundMatch);
-        plFoundMatch.setLayout(plFoundMatchLayout);
-        plFoundMatchLayout.setHorizontalGroup(
-            plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plFoundMatchLayout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addComponent(btnDeclinePairMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAcceptPairMatch)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plFoundMatchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbFoundMatch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbTimerPairMatch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRefreshRank)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40))
         );
-        plFoundMatchLayout.setVerticalGroup(
-            plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plFoundMatchLayout.createSequentialGroup()
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbFoundMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbTimerPairMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDeclinePairMatch)
-                    .addComponent(btnAcceptPairMatch))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRefreshRank)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
+
+        tpRoomAndUser.addTab("Bảng xếp hạng", jPanel6);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -504,8 +514,7 @@ public class MainMenu extends javax.swing.JFrame {
                     .addComponent(tpRoomAndUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(plFindingMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(plBtns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(plFoundMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -517,9 +526,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(plBtns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(plFindingMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(plFoundMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(106, 106, 106)
                 .addComponent(tpRoomAndUser, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -563,16 +570,6 @@ public class MainMenu extends javax.swing.JFrame {
         // socketHandler sẽ đọc kết quả trả về từ server và quyết định có đổi stateDisplay hay không
         RunClient.socketHandler.cancelFindMatch();
     }//GEN-LAST:event_btnCancelFindMatchActionPerformed
-
-    private void btnDeclinePairMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeclinePairMatchActionPerformed
-        setDisplayState(State.DEFAULT);
-        RunClient.socketHandler.declinePairMatch();
-    }//GEN-LAST:event_btnDeclinePairMatchActionPerformed
-
-    private void btnAcceptPairMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptPairMatchActionPerformed
-        setDisplayState(State.WAITING_COMPETITOR_ACCEPT);
-        RunClient.socketHandler.acceptPairMatch();
-    }//GEN-LAST:event_btnAcceptPairMatchActionPerformed
 
     private void btnWatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWatchActionPerformed
         // https://stackoverflow.com/a/38981623
@@ -633,34 +630,30 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAcceptPairMatch;
     private javax.swing.JButton btnCancelFindMatch;
     private javax.swing.JButton btnCreateRoom;
-    private javax.swing.JButton btnDeclinePairMatch;
     private javax.swing.JButton btnFindMatch;
     private javax.swing.JButton btnJoin;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnProfile;
     private javax.swing.JButton btnRefreshListRoom;
+    private javax.swing.JButton btnRefreshRank;
     private javax.swing.JButton btnWatch;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JProgressBar jProgressBar2;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbFindMatch;
-    private javax.swing.JLabel lbFoundMatch;
-    private javax.swing.JLabel lbTimerPairMatch;
     private javax.swing.JPanel plBtns;
     private javax.swing.JPanel plFindingMatch;
-    private javax.swing.JPanel plFoundMatch;
+    private javax.swing.JTable tableRank;
     private javax.swing.JTable tbListRoom;
     private javax.swing.JTabbedPane tpRoomAndUser;
     // End of variables declaration//GEN-END:variables

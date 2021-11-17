@@ -26,7 +26,8 @@ public class StreamData {
         LOGOUT, // chức năng đăng xuất / không cần dữ liệu thêm / success hoặc failed
 
         // main menu
-        LIST_ROOM, // lấy danh sách phòng hiện tại / ko cần dữ liệu thêm / dữ liệu danh sách phòng
+        LIST_ROOM,
+        LIST_RANK,// lấy danh sách phòng hiện tại / ko cần dữ liệu thêm / dữ liệu danh sách phòng
         LIST_ONLINE, // lấy danh sách người chơi đang online / không cần dữ liệu thêm / dữ liệu danh sách online
         CREATE_ROOM, // chức năng tạo phòng / không cần dữ liệu thêm / success hoặc failed
         JOIN_ROOM, // chức năng vào phòng, nếu chưa có đủ người thì chơi, đủ rồi thì xem / id phòng / success hoặc failed
