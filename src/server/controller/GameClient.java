@@ -589,10 +589,12 @@ public class GameClient implements Runnable {
                             for (GameClient client : team1) {
                                 client.loginPlayer.addScore(3);
                                 client.loginPlayer.setWinCount(client.loginPlayer.getWinCount() + 1);
+                                client.loginPlayer.setMatchCount(client.loginPlayer.getMatchCount() + 1);
                                 dao.update(client.loginPlayer);
                             }
                             for (GameClient client : team2) {
                                 client.loginPlayer.addScore(-1);
+                                client.loginPlayer.setMatchCount(client.loginPlayer.getMatchCount() + 1);
                                 dao.update(client.loginPlayer);
                             }
                         }
@@ -602,10 +604,12 @@ public class GameClient implements Runnable {
                             for (GameClient client : team2) {
                                 client.loginPlayer.addScore(3);
                                 client.loginPlayer.setWinCount(client.loginPlayer.getWinCount() + 1);
+                                client.loginPlayer.setMatchCount(client.loginPlayer.getMatchCount() + 1);
                                 dao.update(client.loginPlayer);
                             }
                             for (GameClient client : team1) {
                                 client.loginPlayer.addScore(-1);
+                                client.loginPlayer.setMatchCount(client.loginPlayer.getMatchCount() + 1);
                                 client.loginPlayer.setWinCount(client.loginPlayer.getWinCount());
                                 dao.update(client.loginPlayer);
                             }
