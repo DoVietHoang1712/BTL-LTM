@@ -5,6 +5,7 @@
  */
 package server.db.layers.DAL;
 
+import java.sql.Connection;
 import server.db.layers.DBConnector.MysqlConnector;
 import server.db.layers.DTO.GameMatch;
 import java.sql.ResultSet;
@@ -19,11 +20,11 @@ import java.util.logging.Logger;
  *
  * @author nguye
  */
-public class GameMatchDAL {
+public class GameMatchDAO {
 
     MysqlConnector connector;
 
-    public GameMatchDAL() {
+    public GameMatchDAO() {
 
     }
 
@@ -63,6 +64,49 @@ public class GameMatchDAL {
 
         return result;
     }
+    
+    public ArrayList<GameMatch> getListHistory(String username) {
+        ArrayList<GameMatch> result = new ArrayList<>();
+        Connection connection = MysqlConnector.getConnection();
+
+        try {
+            String qry = "SELECT * FROM gamematch where username1 = ? or username2 = ? or username3 = ? or username4 = ? order by id desc;";
+            PreparedStatement stm = connection.prepareStatement(qry);
+            stm.setString(1, username);
+            stm.setString(2, username);
+            stm.setString(3, username);
+            stm.setString(4, username);
+            ResultSet rs = stm.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    GameMatch g = new GameMatch(
+                            rs.getInt("ID"),
+                            rs.getString("username1"),
+                            rs.getString("username2"),
+                            rs.getString("username3"),
+                            rs.getString("username4"),
+                            rs.getString("winnerID"),
+                            rs.getString("winnerID2"),
+                            rs.getInt("playTime"),
+                            rs.getInt("totalMove"),
+                            LocalDateTime.parse(rs.getString("StartedTime"))
+                    );
+                    result.add(g);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error while trying to read Matchs info from database!");
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return result;
+    }
 
     public boolean add(GameMatch m) {
         boolean result = false;
@@ -84,7 +128,7 @@ public class GameMatchDAL {
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
-            Logger.getLogger(GameMatchDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connector.closeConnection();
         }
@@ -123,7 +167,7 @@ public class GameMatchDAL {
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
-            Logger.getLogger(GameMatchDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connector.closeConnection();
         }
@@ -143,7 +187,7 @@ public class GameMatchDAL {
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
-            Logger.getLogger(GameMatchDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameMatchDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connector.closeConnection();
         }

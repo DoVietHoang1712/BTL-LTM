@@ -39,6 +39,10 @@ public class SocketHandler {
 
     Thread listener = null;
 
+    public String getLoginUsername() {
+        return loginUsername;
+    }
+
     public String connect(String addr, int port) {
         try {
             // getting ip 
@@ -109,6 +113,10 @@ public class SocketHandler {
 
                     case LIST_ONLINE:
                         onReceiveListOnline(received);
+                        break;
+                        
+                    case MATCH_HISTORY:
+                        onReceiveListHistory(received);
                         break;
 
                     case CREATE_ROOM:
@@ -208,7 +216,6 @@ public class SocketHandler {
         } else if (status.equals("true")) {
             // lưu email login
             this.loginUsername = splitted[2];
-
             // chuyển scene
             RunClient.closeScene(RunClient.SceneName.LOGIN);
             RunClient.openScene(RunClient.SceneName.MAINMENU);
@@ -286,6 +293,10 @@ public class SocketHandler {
 
             RunClient.mainMenuScene.setListRoom(vdata, vheader);
         }
+    }
+    
+    private void onReceiveListHistory(String received) {
+        RunClient.mainMenuScene.setListHistory(received);
     }
 
     private void onReceiveCreateRoom(String received) {
@@ -587,6 +598,9 @@ public class SocketHandler {
     
     public void listOnline() {
         sendData(StreamData.Type.LIST_ONLINE.name());
+    }
+    public void listHistory() {
+        sendData(StreamData.Type.MATCH_HISTORY.name());
     }
 
     // main menu

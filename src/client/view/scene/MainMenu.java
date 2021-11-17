@@ -48,6 +48,7 @@ public class MainMenu extends javax.swing.JFrame {
         RunClient.socketHandler.listRank();
         RunClient.socketHandler.listOnline();
         RunClient.socketHandler.getProfile();
+        RunClient.socketHandler.listHistory();
     }
     
     public void setProfile(String username, String elo, String wins, String lose) {
@@ -128,6 +129,46 @@ public class MainMenu extends javax.swing.JFrame {
                 vdata.add(vrow);
             }
             tableOnline.setModel(new DefaultTableModel(vdata, vheader));
+        }
+    }
+    
+    public void setListHistory(String received) {
+        String[] splitted = received.split(";");
+        String status = splitted[1];
+
+        if (status.equals("failed")) {
+
+        } else if (status.equals("success")) {
+            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
+            Vector vheader = new Vector();
+            vheader.add("ID");
+            vheader.add("Play time");
+            vheader.add("Status");
+            vheader.add("Total Move");
+            vheader.add("Time");
+
+            Vector vdata = new Vector();
+
+            // i += 3: 3 là số cột trong bảng
+            // i = 3; i < roomCount + 3: dữ liệu phòng bắt đầu từ index 3 trong mảng splitted
+            for (int i = 2; i < splitted.length - 9; i += 10) {
+
+                boolean nestedStatus = splitted[4].equals(RunClient.socketHandler.getLoginUsername()) 
+                        || splitted[5].equals(RunClient.socketHandler.getLoginUsername());
+                String ID = (splitted[i+9]);
+                String playTime = splitted[i + 6];
+                String totalMove = splitted[i+8];
+                String time = splitted[i+7];
+                Vector vrow = new Vector();
+                vrow.add(ID);
+                vrow.add(playTime);
+                vrow.add(nestedStatus);
+                vrow.add(totalMove);
+                vrow.add(time);
+
+                vdata.add(vrow);
+            }
+            tableListHistory.setModel(new DefaultTableModel(vdata, vheader));
         }
     }
 
@@ -274,7 +315,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnRefreshRank = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableListHistory = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -354,12 +395,12 @@ public class MainMenu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(txtUsername)
-                .addGap(102, 102, 102)
-                .addComponent(txtElo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(txtWins, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                .addComponent(txtLose, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(82, 82, 82)
+                .addComponent(txtElo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addComponent(txtWins, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(txtLose, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
         );
         jPanel1Layout.setVerticalGroup(
@@ -550,7 +591,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         tpRoomAndUser.addTab("Bảng xếp hạng", jPanel6);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableListHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -566,9 +607,14 @@ public class MainMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable1);
+        jScrollPane4.setViewportView(tableListHistory);
 
         jButton1.setText("Làm mới");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -669,6 +715,11 @@ public class MainMenu extends javax.swing.JFrame {
         RunClient.socketHandler.findMatch();
     }//GEN-LAST:event_btnFindMatchActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        RunClient.socketHandler.listHistory();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -725,10 +776,10 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbFindMatch;
     private javax.swing.JPanel plBtns;
     private javax.swing.JPanel plFindingMatch;
+    private javax.swing.JTable tableListHistory;
     private javax.swing.JTable tableOnline;
     private javax.swing.JTable tableRank;
     private javax.swing.JTable tbListRoom;
