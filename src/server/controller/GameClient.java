@@ -229,7 +229,6 @@ public class GameClient implements Runnable {
             // set login email
             this.loginPlayer = result;
             RunServer.clientManager.add(this);
-            
             sendData(StreamData.Type.LOGIN.name() + ";" + "true" + ";" + username);
         } else {
             // send result
@@ -302,9 +301,9 @@ public class GameClient implements Runnable {
     private void onReceiveListOnline(String received) {
         // prepare data
         String result = "success;";
-        
+        PlayerDAO dao = new PlayerDAO();
         for(GameClient gc: RunServer.clientManager.clients) {
-            Player p = gc.loginPlayer;
+            Player p = dao.getByUsernamee(gc.loginPlayer.getUsername());
             result += p.getUsername() + ";" + p.getElo() + ";" + p.getWinCount() +";" + (p.getMatchCount() - p.getWinCount()) + ";";
         }
 

@@ -37,7 +37,35 @@ public class PlayerDAO {
                 p.setPassword(rs.getString("password"));
                 p.setMatchCount(rs.getInt("matchCount"));
                 p.setWinCount(rs.getInt("winCount"));
-                
+                return p;
+            }
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(PlayerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PlayerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+    
+    public Player getByUsernamee(String username) {
+        Connection connection = MysqlConnector.getConnection();
+        try {
+            String qry = "SELECT * FROM Player WHERE username = ? limit 1;";
+            PreparedStatement stm = connection.prepareStatement(qry);
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()) {
+                Player p = new Player();
+                p.setId(rs.getInt("id"));
+                p.setElo(rs.getInt("elo"));
+                p.setUsername(rs.getString("username"));
+                p.setMatchCount(rs.getInt("matchCount"));
+                p.setWinCount(rs.getInt("winCount"));
                 return p;
             }
             return null;
@@ -64,6 +92,7 @@ public class PlayerDAO {
             if (rs != null) {
                 while (rs.next()) {
                     Player p = new Player(
+                            rs.getInt("ID"),
                             rs.getString("Username"),
                             rs.getString("Password"),
                             rs.getInt("Elo"),
@@ -190,6 +219,7 @@ public class PlayerDAO {
             if (rs != null) {
                 while (rs.next()) {
                     Player p = new Player(
+                            rs.getInt("ID"),
                             rs.getString("Username"),
                             rs.getString("Password"),
                             rs.getInt("Elo"),
