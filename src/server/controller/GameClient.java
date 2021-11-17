@@ -91,6 +91,10 @@ public class GameClient implements Runnable {
                     case LIST_ONLINE:
                         onReceiveListOnline(received);
                         break;
+                        
+                    case GET_PROFILE:
+                        onReceiveGetProfile(received);
+                        break;
 
                     case CREATE_ROOM:
                         onReceiveCreateRoom(received);
@@ -187,6 +191,16 @@ public class GameClient implements Runnable {
     
     private void onReceiveAccepted(String received) {
         
+    }
+    
+    private void onReceiveGetProfile(String receive) {
+        // prepare data
+        String result = "success;";
+        Player p = loginPlayer;
+        result += p.getUsername() + ";" + p.getElo() + ";" + p.getWinCount() +";" + (p.getMatchCount() - p.getWinCount());
+
+        // send data
+        sendData(StreamData.Type.GET_PROFILE.name() + ";" + result);
     }
     
     private void onReceiveLogin(String received) {

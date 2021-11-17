@@ -80,7 +80,7 @@ public class Profile extends javax.swing.JFrame {
 
     public void loadProfileData(String email) {
         setLoading(true);
-        RunClient.socketHandler.getProfile(email);
+        RunClient.socketHandler.getProfile();
     }
 
     public void setProfileData(ProfileData p) {
@@ -553,7 +553,7 @@ public class Profile extends javax.swing.JFrame {
         setProfileSaveLoading(true);
 
         // call sockethandler function
-        RunClient.socketHandler.editProfile(username, name, avatar, yearOfBirth, gender);
+//        RunClient.socketHandler.editProfile(username, name, avatar, yearOfBirth, gender);
     }//GEN-LAST:event_btnProfileSaveActionPerformed
 
     private void btnProfileCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileCancelActionPerformed
