@@ -130,7 +130,6 @@ public class PlayerDAO {
 
             stm.setInt(1, p.getElo());
             stm.setString(2, p.getPassword());
-            
             stm.setInt(3, p.getMatchCount());
             stm.setInt(4, p.getWinCount());
             stm.setString(5, p.getUsername());

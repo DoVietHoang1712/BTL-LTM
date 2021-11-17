@@ -103,6 +103,7 @@ public class Caro extends GameLogic {
 //            }
 //            
 //        }
+
         // nếu vị trí đánh nằm ngoài board
         if (row < 0 && row >= ROW && col < 0 && col >= COL) {
             return false;

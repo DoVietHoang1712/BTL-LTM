@@ -186,6 +186,7 @@ public class InGame extends javax.swing.JFrame {
 
     public void startGame(int turnTimeLimit, int matchTimeLimit) {
         System.out.println(player1.getUsername() + player2.getUsername() + player3.getUsername() + player4.getUsername());
+
         turnTimer = new CountDownTimer(turnTimeLimit);
         turnTimer.setTimerCallBack(
                 // end match callback
@@ -262,7 +263,6 @@ public class InGame extends javax.swing.JFrame {
 
     // change turn sang cho đối thủ của email đầu vào
     public void changeTurnFrom(String email) {
-//        System.out.println("turn2: "+turn);
         if (email.equals(player1.getUsername())) {
             setTurn(player1.getUsername());
         } else if (email.equals(player2.getUsername())) {
@@ -360,6 +360,7 @@ public class InGame extends javax.swing.JFrame {
                     if (myEmail.equals(player1.getUsername()) && (turn == 1)) {
                         b.setIcon(p1Icon);
                         // turn = 2;
+
                     }
 
                     if (myEmail.equals(player2.getUsername()) && (turn == 3)) {

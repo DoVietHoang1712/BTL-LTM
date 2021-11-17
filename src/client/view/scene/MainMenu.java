@@ -457,7 +457,6 @@ public class MainMenu extends javax.swing.JFrame {
 
         tpRoomAndUser.addTab("Danh sách phòng", jPanel5);
 
-
         tableOnline.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
