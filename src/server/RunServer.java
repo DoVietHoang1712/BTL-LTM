@@ -5,7 +5,6 @@
  */
 package server;
 
-import server.controller.Admin;
 import server.controller.GameClient;
 import server.controller.ClientManager;
 import server.controller.RoomManager;
@@ -42,13 +41,10 @@ public class RunServer {
             ThreadPoolExecutor executor = new ThreadPoolExecutor(
                     10, // corePoolSize
                     100, // maximumPoolSize
-                    10, // thread timeout
+                    100, // thread timeout
                     TimeUnit.SECONDS,
-                    new ArrayBlockingQueue<>(8) // queueCapacity
+                    new ArrayBlockingQueue<>(20) // queueCapacity
             );
-
-            // admin
-            executor.execute(new Admin());
 
             // server main loop - listen to client's connection
             while (!isShutDown) {

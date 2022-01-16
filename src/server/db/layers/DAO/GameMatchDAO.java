@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.DAL;
+package server.db.layers.DAO;
 
 import java.sql.Connection;
 import server.db.layers.DBConnector.MysqlConnector;

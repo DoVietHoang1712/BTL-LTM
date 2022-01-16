@@ -195,7 +195,6 @@ public class MainMenu extends javax.swing.JFrame {
 
                     // tự động từ chối nếu quá thời gian mà chưa chọn đồng ý
                     if (!pairAcceptChoosed) {
-                        RunClient.socketHandler.declinePairMatch();
                     }
                     return null;
                 },
