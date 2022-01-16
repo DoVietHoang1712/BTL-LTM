@@ -10,10 +10,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 // source: https://stackoverflow.com/a/41156
 public class RandomString {
 

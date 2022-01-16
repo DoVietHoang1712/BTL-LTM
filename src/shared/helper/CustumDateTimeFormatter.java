@@ -8,10 +8,7 @@ package shared.helper;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class CustumDateTimeFormatter {
 
     // https://stackoverflow.com/a/6953926

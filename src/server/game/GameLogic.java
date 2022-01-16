@@ -5,10 +5,7 @@
  */
 package server.game;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class GameLogic {
 
     public GameLogic() {

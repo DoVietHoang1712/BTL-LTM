@@ -4,19 +4,16 @@
  * and open the template in the editor.
  */
 package client.view.helper;
-
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
 /**
  *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
+ * @author hoang
  */
 public class Validation {
-
     public static boolean checkUsername(String username) {
         return username.length() >= 5 && username.length() <= 30;
     }
@@ -25,7 +22,7 @@ public class Validation {
         return pass.length() >= 6 && pass.length() <= 30;
     }
 
-    //http://sinhviencntt.blogspot.com/2015/01/code-java-chuyen-oi-tieng-viet-co-dau.html
+
     public static String removeAccent(String s) {
         String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
@@ -41,10 +38,6 @@ public class Validation {
         }
     }
 
-//     Listener for NumberInput fields.
-//     Need to invoke changes to the document from the Event Dispatcher Thread,
-//     otherwise 'Attempt to mutate notification' exception is Throwed
-//     https://stackoverflow.com/questions/15206586/getting-attempt-to-mutate-notification-exception
     public static void checkNumberInputChanged(JTextField numberFormatedField) {
         Runnable doAssist = new Runnable() {
             String temp = numberFormatedField.getText();//temp = 1234a

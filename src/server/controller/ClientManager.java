@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import server.db.layers.DTO.Player;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class ClientManager {
 
     ArrayList<GameClient> clients;

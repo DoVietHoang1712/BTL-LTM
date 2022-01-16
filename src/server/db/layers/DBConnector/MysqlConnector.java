@@ -13,10 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author nguye
- */
+
 public class MysqlConnector {
 
     Connection conn = null;
@@ -24,7 +21,7 @@ public class MysqlConnector {
     String server = "localhost:3306";
     String db = "carodb";
     String user = "root";
-    String pass = "hoang17122000";
+    String pass = "";
 
     public MysqlConnector() {
         checkDriver();

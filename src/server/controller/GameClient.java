@@ -30,10 +30,7 @@ import shared.constant.StreamData;
 import shared.helper.CustumDateTimeFormatter;
 import shared.helper.Line;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class GameClient implements Runnable {
 
     Socket s;

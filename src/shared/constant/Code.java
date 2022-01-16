@@ -5,10 +5,7 @@
  */
 package shared.constant;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class Code {
 
     public static String ACCOUNT_NOT_FOUND = "Không tìm thấy tài khoản.";

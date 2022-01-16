@@ -14,10 +14,7 @@ import server.db.layers.BUS.GameMatchBUS;
 import server.db.layers.DTO.GameMatch;
 import server.db.layers.DTO.Player;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class Admin implements Runnable {
 
     GameMatchBUS gameMatchBus;

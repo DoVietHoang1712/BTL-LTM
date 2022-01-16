@@ -5,10 +5,7 @@
  */
 package client.model;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class ProfileData {
 
     int id;

@@ -15,10 +15,7 @@ import client.view.scene.Profile;
 import client.view.scene.Signup;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class RunClient {
 
     public enum SceneName {

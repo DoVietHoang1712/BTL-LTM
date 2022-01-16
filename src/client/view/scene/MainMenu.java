@@ -13,10 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import shared.helper.CountDownTimer;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class MainMenu extends javax.swing.JFrame {
 
     public enum State {

@@ -5,10 +5,7 @@
  */
 package shared.constant;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class StreamData {
 
     /* Cách đọc hiểu đống bên dưới?

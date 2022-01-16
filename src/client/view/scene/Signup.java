@@ -11,10 +11,7 @@ import shared.constant.Avatar;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class Signup extends javax.swing.JFrame {
 
     /**

@@ -10,7 +10,6 @@ import client.model.ChatItem;
 import client.model.PlayerInGame;
 import client.model.ProfileData;
 import client.view.scene.MainMenu;
-import shared.helper.MyHash;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,10 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import server.game.caro.History;
 import shared.constant.StreamData;
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class SocketHandler {
 
     Socket s;
@@ -646,14 +642,14 @@ public class SocketHandler {
     // profile
     public void changePassword(String oldPassword, String newPassword) {
         // hasing password
-        String oldPasswordHash = MyHash.hash(oldPassword);
-        String newPasswordHash = MyHash.hash(newPassword);
+//        String oldPasswordHash = MyHash.hash(oldPassword);
+//        String newPasswordHash = MyHash.hash(newPassword);
 
         // prepare data
-        String data = StreamData.Type.CHANGE_PASSWORD.name() + ";" + oldPasswordHash + ";" + newPasswordHash;
+//        String data = StreamData.Type.CHANGE_PASSWORD.name() + ";" + oldPasswordHash + ";" + newPasswordHash;
 
         // send data
-        sendData(data);
+//        sendData(data);
     }
 
     public void getProfile() {

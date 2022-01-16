@@ -5,12 +5,8 @@
  */
 package server.game.caro;
 
-import server.db.layers.DTO.Team;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class History {
 
     int row;

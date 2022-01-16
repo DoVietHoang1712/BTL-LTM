@@ -9,10 +9,7 @@ import server.db.layers.DAL.GameMatchDAO;
 import server.db.layers.DTO.GameMatch;
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
+
 public class GameMatchBUS {
 
     ArrayList<GameMatch> listGameMatch = new ArrayList<>();

@@ -4,10 +4,7 @@
  * and open the template in the editor.
  */
 package client.model;
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class PlayerInGame {
 
     String username;

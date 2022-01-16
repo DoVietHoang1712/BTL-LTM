@@ -16,10 +16,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author nguye
- */
+
 public class GameMatchDAO {
 
     MysqlConnector connector;

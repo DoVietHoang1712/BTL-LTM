@@ -9,10 +9,7 @@ import client.RunClient;
 import client.view.helper.Validation;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class Login extends javax.swing.JFrame {
 
     /**

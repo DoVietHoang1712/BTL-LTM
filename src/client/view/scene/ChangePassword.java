@@ -8,10 +8,7 @@ package client.view.scene;
 import client.RunClient;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class ChangePassword extends javax.swing.JFrame {
 
     /**

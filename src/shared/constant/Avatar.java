@@ -5,10 +5,7 @@
  */
 package shared.constant;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class Avatar {
 
     public static final String ASSET_PATH = "src/client/view/asset/";

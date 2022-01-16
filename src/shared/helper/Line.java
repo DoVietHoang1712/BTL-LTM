@@ -5,10 +5,7 @@
  */
 package shared.helper;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+ 
 public class Line {
 
     public int x1, x2, y1, y2;
