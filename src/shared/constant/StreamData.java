@@ -14,8 +14,6 @@ public class StreamData {
         Tên type // mô tả / dữ liệu gửi đi từ client / dữ liệu trả về từ server
      */
     public enum Type {
-        // security
-        AESKEY, // client gửi aes key cho server / aeskey đã được mã hóa / server không cần phản hồi
 
         // auth
         LOGIN, // chức năng đăng nhập / email, password / success hoặc failed
@@ -28,13 +26,10 @@ public class StreamData {
         LIST_ONLINE, // lấy danh sách người chơi đang online / không cần dữ liệu thêm / dữ liệu danh sách online
         CREATE_ROOM, // chức năng tạo phòng / không cần dữ liệu thêm / success hoặc failed
         JOIN_ROOM, // chức năng vào phòng, nếu chưa có đủ người thì chơi, đủ rồi thì xem / id phòng / success hoặc failed
-        WATCH_ROOM, // chức năng vào xem / id phòng / success hoặc failed
 
         // pair match
         FIND_MATCH, // chức năng tìm trận / không cần dữ liệu thêm / success hoặc failed
         CANCEL_FIND_MATCH, // chức năng hủy tìm trận / không cần dữ liệu thêm / success hoặc failed
-        REQUEST_PAIR_MATCH, // chức năng hỏi user có đồng ý ghép cặp không / đồng ý hay không / thông tin user sẽ ghép cặp
-        RESULT_PAIR_MATCH, // chức năng gửi thông báo đồng ý ghép cặp / _chỉ có server gửi có client loại type này_ / kết quả ghép cặp
 
         // in game
         DATA_ROOM, // dữ liệu phòng khi vừa vào phòng / id phòng / dữ liệu phòng

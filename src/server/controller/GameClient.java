@@ -9,19 +9,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import server.RunServer;
-import server.db.layers.BUS.GameMatchBUS;
-import server.db.layers.DAL.GameMatchDAO;
-import server.db.layers.DAL.PlayerDAO;
+import server.db.layers.DAO.GameMatchDAO;
+import server.db.layers.DAO.PlayerDAO;
 import server.db.layers.DTO.GameMatch;
 import server.db.layers.DTO.Player;
 import server.game.caro.Caro;
@@ -100,35 +96,12 @@ public class GameClient implements Runnable {
                         onReceiveListHistory(received);
                         break;
 
-                    case CREATE_ROOM:
-                        onReceiveCreateRoom(received);
-                        break;
-
-                    case JOIN_ROOM:
-                        onReceiveJoinRoom(received);
-                        break;
-
-                    case WATCH_ROOM:
-                        onReceiveWatchRoom(received);
-                        break;
-
                     case FIND_MATCH:
                         onReceiveFindMatchAndAccept(received);
                         break;
 
                     case CANCEL_FIND_MATCH:
                         onReceiveCancelFindMatch(received);
-                        break;
-
-                    case REQUEST_PAIR_MATCH:
-                        onReceiveRequestPairMatch(received);
-                        break;
-
-                    case RESULT_PAIR_MATCH:
-                        // type này có 1 chiều server->client
-                        // gửi khi ghép cặp bị đối thủ từ chối
-                        // nếu ghép cặp được đồng ý thì server gửi type join-room luôn chứ ko cần gửi type này
-                        // client không gửi type này cho server
                         break;
 
                     case DATA_ROOM:
@@ -149,15 +122,6 @@ public class GameClient implements Runnable {
 
                     case GAME_EVENT:
                         onReceiveGameEvent(received);
-                        break;
-                    case INVITE:
-                        onReceiveInvite(received);
-                        break;
-                    case ACCEPTED:
-                        onReceiveAccepted(received);
-                        break;
-                    case REJECTED:
-                        onReceiveRejected(received);
                         break;
                     case EXIT:
                         running = false;
@@ -183,18 +147,6 @@ public class GameClient implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    private void onReceiveInvite(String received) {
-        
-    }
-    
-    private void onReceiveRejected(String received) {
-        
-    }
-    
-    private void onReceiveAccepted(String received) {
-        
     }
     
     private void onReceiveGetProfile(String receive) {
@@ -323,24 +275,6 @@ public class GameClient implements Runnable {
         // send data
         sendData(StreamData.Type.MATCH_HISTORY.name() + ";" + result.substring(0, result.length()-1));
     }
-
-    private void onReceiveCreateRoom(String received) {
-
-    }
-
-    private void onReceiveJoinRoom(String received) {
-
-    }
-
-    private void onReceiveWatchRoom(String received) {
-        String[] splitted = received.split(";");
-        String roomId = splitted[1];
-
-        String status = joinRoom(roomId, true);
-
-        sendData(StreamData.Type.WATCH_ROOM.name() + ";" + status);
-    }
-
     // pair match
     private void onReceiveFindMatchAndAccept(String received) {
         // nếu đang trong phòng rồi thì báo lỗi ngay
@@ -400,58 +334,6 @@ public class GameClient implements Runnable {
 
         // báo cho client để tắt giao diện đang tìm phòng
         sendData(StreamData.Type.CANCEL_FIND_MATCH.name() + ";success");
-    }
-
-    private void onReceiveRequestPairMatch(String received) {
-        String[] splitted = received.split(";");
-        String requestResult = splitted[1];
-
-        // save accept pair status
-        this.acceptPairMatchStatus = requestResult;
-
-        // get competitor
-        if (cCompetitor == null) {
-            sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";failed;" + Code.COMPETITOR_LEAVE);
-            return;
-        }
-
-        // if once say no
-        if (requestResult.equals("no")) {
-            // TODO tru diem
-            this.loginPlayer.setElo(this.loginPlayer.getElo()- 1);
-            new PlayerDAO().update(this.loginPlayer);
-
-            // send data
-            this.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";failed;" + Code.YOU_CHOOSE_NO);
-            cCompetitor.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";failed;" + Code.COMPETITOR_CHOOSE_NO);
-
-            // reset acceptPairMatchStatus
-            this.acceptPairMatchStatus = "_";
-            cCompetitor.acceptPairMatchStatus = "_";
-        }
-
-        // if both say yes
-        if (requestResult.equals("yes") && cCompetitor.acceptPairMatchStatus.equals("yes")) {
-            // send success pair match
-            this.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";success");
-            cCompetitor.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";success");
-
-            // create new room
-            Room newRoom = RunServer.roomManager.createRoom();
-
-            // join room
-            String thisStatus = this.joinRoom(newRoom, false);
-            String competitorStatus = cCompetitor.joinRoom(newRoom, false);
-
-            // send join room status to client
-            sendData(StreamData.Type.JOIN_ROOM.name() + ";" + thisStatus);
-            cCompetitor.sendData(StreamData.Type.JOIN_ROOM.name() + ";" + competitorStatus);
-
-            // TODO update list room to all client
-            // reset acceptPairMatchStatus
-            this.acceptPairMatchStatus = "_";
-            cCompetitor.acceptPairMatchStatus = "_";
-        }
     }
 
     // in game
@@ -533,7 +415,7 @@ public class GameClient implements Runnable {
         String[] splitted = received.split(";");
         StreamData.Type gameEventType = StreamData.getType(splitted[1]);
 
-        Caro caroGame = (Caro) joinedRoom.getGamelogic();
+        Caro caroGame = (Caro) joinedRoom.getGame();
 
         switch (gameEventType) {
             case MOVE:
@@ -563,7 +445,7 @@ public class GameClient implements Runnable {
                 ArrayList<GameClient> loserTeam = new ArrayList<>();
                 if (caroGame.move(row, column, loginPlayer.getUsername(), team)) {
                     // restart turn timer
-                    joinedRoom.gamelogic.restartTurnTimer();
+                    joinedRoom.game.restartTurnTimer();
 
                     // broadcast to all client in room movedata
                     joinedRoom.broadcast(
@@ -610,18 +492,6 @@ public class GameClient implements Runnable {
                                 dao.update(client.loginPlayer);
                             }
                         }
-                        // TODO luu game match
-                        new GameMatchBUS().add(new GameMatch(
-                                winnerTeam.get(0).loginPlayer.getUsername(),
-                                winnerTeam.get(1).loginPlayer.getUsername(),
-                                loserTeam.get(0).loginPlayer.getUsername(),
-                                loserTeam.get(1).loginPlayer.getUsername(),
-                                winnerTeam.get(0).loginPlayer.getUsername(),
-                                winnerTeam.get(1).loginPlayer.getUsername(),
-                                Caro.MATCH_TIME_LIMIT - ((Caro) joinedRoom.getGamelogic()).getMatchTimer().getCurrentTick(),
-                                ((Caro) joinedRoom.getGamelogic()).getHistory().size(),
-                                joinedRoom.startedTime
-                        ));
 
                         // stop game timer
                         caroGame.cancelTimer();

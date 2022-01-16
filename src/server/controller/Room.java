@@ -5,15 +5,11 @@
  */
 package server.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import server.game.caro.Caro;
-import server.game.GameLogic;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import server.RunServer;
-import server.db.layers.BUS.GameMatchBUS;
-import server.db.layers.DTO.GameMatch;
 import server.game.caro.History;
 import shared.constant.StreamData;
 
@@ -21,7 +17,7 @@ import shared.constant.StreamData;
 public class Room {
 
     String id;
-    Caro gamelogic;
+    Caro game;
     GameClient client1 = null;
     GameClient client2 = null;
     GameClient client3 = null;
@@ -71,7 +67,7 @@ public class Room {
         this.id = id;
 
         // create game logic
-        gamelogic = new Caro();
+        game = new Caro();
     }
 
     public boolean isGameStarted() {
@@ -81,24 +77,21 @@ public class Room {
     public void startGame() {
         startedTime = LocalDateTime.now();
         gameStarted = true;
-        gamelogic.getTurnTimer()
-                .setTimerCallBack(
-                        // end turn callback
+        game.getTurnTimer()
+                .setTimerCallBack(// end turn callback
                         (Callable) () -> {
                             // TURN_TIMER_END;<winner-email>
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
                                     + StreamData.Type.TURN_TIMER_END.name() + ";"
-                                    + gamelogic.getLastMoveEmail()
+                                    + game.getLastMoveEmail()
                             );
                             return null;
                         },
                         // tick turn callback
                         (Callable) () -> {
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
                                     + StreamData.Type.TURN_TICK.name() + ";"
-                                    + gamelogic.getTurnTimer().getCurrentTick()
+                                    + game.getTurnTimer().getCurrentTick()
                             );
                             return null;
                         },
@@ -106,20 +99,9 @@ public class Room {
                         Caro.TURN_TIME_LIMIT / 10
                 );
 
-        gamelogic.getMatchTimer()
-                .setTimerCallBack(
-                        // end match callback
+        game.getMatchTimer()
+                .setTimerCallBack(// end match callback
                         (Callable) () -> {
-
-                            // tinh diem hoa
-//                            new GameMatchBUS().add(new GameMatch(
-//                                    client1.getLoginPlayer().getUsername(),
-//                                    client2.getLoginPlayer().getUsername(),
-//                                    "",
-//                                    gamelogic.getMatchTimer().getCurrentTick(),
-//                                    gamelogic.getHistory().size(),
-//                                    startedTime
-//                            ));
 
                             broadcast(
                                     StreamData.Type.GAME_EVENT + ";"
@@ -129,64 +111,16 @@ public class Room {
                         },
                         // tick match callback
                         (Callable) () -> {
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
                                     + StreamData.Type.MATCH_TICK.name() + ";"
-                                    + gamelogic.getMatchTimer().getCurrentTick()
+                                    + game.getMatchTimer().getCurrentTick()
                             );
                             return null;
                         },
                         // tick interval
                         Caro.MATCH_TIME_LIMIT / 10
                 );
-        gamelogic.getTurnTimer()
-                .setTimerCallBack(
-                        // end turn callback
-                        (Callable) () -> {
-                            // TURN_TIMER_END;<winner-email>
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
-                                    + StreamData.Type.TURN_TIMER_END.name() + ";"
-                                    + gamelogic.getLastMoveEmail()
-                            );
-                            return null;
-                        },
-                        // tick turn callback
-                        (Callable) () -> {
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
-                                    + StreamData.Type.TURN_TICK.name() + ";"
-                                    + gamelogic.getTurnTimer().getCurrentTick()
-                            );
-                            return null;
-                        },
-                        // tick interval
-                        Caro.TURN_TIME_LIMIT / 10
-                );
-        gamelogic.getTurnTimer()
-                .setTimerCallBack(
-                        // end turn callback
-                        (Callable) () -> {
-                            // TURN_TIMER_END;<winner-email>
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
-                                    + StreamData.Type.TURN_TIMER_END.name() + ";"
-                                    + gamelogic.getLastMoveEmail()
-                            );
-                            return null;
-                        },
-                        // tick turn callback
-                        (Callable) () -> {
-                            broadcast(
-                                    StreamData.Type.GAME_EVENT + ";"
-                                    + StreamData.Type.TURN_TICK.name() + ";"
-                                    + gamelogic.getTurnTimer().getCurrentTick()
-                            );
-                            return null;
-                        },
-                        // tick interval
-                        Caro.TURN_TIME_LIMIT / 10
-                );
+        
     }
 
     // add/remove client
@@ -260,14 +194,14 @@ public class Room {
     public String getTimerData() {
         String data = "";
 
-        data += Caro.MATCH_TIME_LIMIT + ";" + gamelogic.getMatchTimer().getCurrentTick() + ";";
-        data += Caro.TURN_TIME_LIMIT + ";" + gamelogic.getTurnTimer().getCurrentTick();
+        data += Caro.MATCH_TIME_LIMIT + ";" + game.getMatchTimer().getCurrentTick() + ";";
+        data += Caro.TURN_TIME_LIMIT + ";" + game.getTurnTimer().getCurrentTick();
 
         return data;
     }
 
     public String getBoardData() {
-        ArrayList<History> history = gamelogic.getHistory();
+        ArrayList<History> history = game.getHistory();
 
         String data = history.size() + ";";
         for (History his : history) {
@@ -309,12 +243,12 @@ public class Room {
         this.id = id;
     }
 
-    public GameLogic getGamelogic() {
-        return gamelogic;
+    public Caro getGame() {
+        return game;
     }
 
     public void setGamelogic(Caro gamelogic) {
-        this.gamelogic = gamelogic;
+        this.game = gamelogic;
     }
 
     public GameClient getClient1() {

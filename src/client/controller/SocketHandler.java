@@ -123,24 +123,12 @@ public class SocketHandler {
                         onReceiveJoinRoom(received);
                         break;
 
-                    case WATCH_ROOM:
-                        onReceiveWatchRoom(received);
-                        break;
-
                     case FIND_MATCH:
                         onReceiveFindMatch(received);
                         break;
 
                     case CANCEL_FIND_MATCH:
                         onReceiveCancelFindMatch(received);
-                        break;
-
-                    case REQUEST_PAIR_MATCH:
-                        onReceiveRequestPairMatch(received);
-                        break;
-
-                    case RESULT_PAIR_MATCH:
-                        onReceiveResultPairMatch(received);
                         break;
 
                     case DATA_ROOM:
@@ -605,10 +593,6 @@ public class SocketHandler {
         sendData(StreamData.Type.LIST_ROOM.name());
     }
 
-    public void watchRoom(String roomId) {
-        sendData(StreamData.Type.WATCH_ROOM.name() + ";" + roomId);
-    }
-
     // pair match
     public void findMatch() {
         sendData(StreamData.Type.FIND_MATCH.name());
@@ -617,15 +601,6 @@ public class SocketHandler {
     public void cancelFindMatch() {
         sendData(StreamData.Type.CANCEL_FIND_MATCH.name());
     }
-
-    public void declinePairMatch() {
-        sendData(StreamData.Type.REQUEST_PAIR_MATCH.name() + ";no");
-    }
-
-    public void acceptPairMatch() {
-        sendData(StreamData.Type.REQUEST_PAIR_MATCH.name() + ";yes");
-    }
-
     // in game
     public void dataRoom(String roomId) {
         sendData(StreamData.Type.DATA_ROOM.name() + ";" + roomId);
