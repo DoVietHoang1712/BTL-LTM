@@ -28,7 +28,7 @@ public class MainMenu extends javax.swing.JFrame {
     final int acceptWaitingTime = 15;
 
     boolean pairAcceptChoosed = false;
-
+    String roomId = "";
     /**
      * Creates new form MainMenuF
      */
@@ -62,7 +62,6 @@ public class MainMenu extends javax.swing.JFrame {
         if (status.equals("failed")) {
 
         } else if (status.equals("success")) {
-            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
             Vector vheader = new Vector();
             vheader.add("Username");
             vheader.add("Elo");
@@ -99,7 +98,6 @@ public class MainMenu extends javax.swing.JFrame {
         if (status.equals("failed")) {
 
         } else if (status.equals("success")) {
-            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
             Vector vheader = new Vector();
             vheader.add("Username");
             vheader.add("Elo");
@@ -136,7 +134,6 @@ public class MainMenu extends javax.swing.JFrame {
         if (status.equals("failed")) {
 
         } else if (status.equals("success")) {
-            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
             Vector vheader = new Vector();
             vheader.add("ID");
             vheader.add("Play time");
@@ -301,6 +298,7 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbListRoom = new javax.swing.JTable();
         btnRefreshListRoom = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableOnline = new javax.swing.JTable();
@@ -469,6 +467,13 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Xem room");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -478,8 +483,10 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(27, 27, 27)
                         .addComponent(btnRefreshListRoom))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -488,7 +495,9 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefreshListRoom)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRefreshListRoom)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -719,6 +728,11 @@ public class MainMenu extends javax.swing.JFrame {
         RunClient.socketHandler.listHistory();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        RunClient.socketHandler.watchMatch(roomId);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -763,6 +777,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnRefreshListRoom;
     private javax.swing.JButton btnRefreshRank;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;

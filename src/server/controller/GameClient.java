@@ -123,6 +123,11 @@ public class GameClient implements Runnable {
                     case GAME_EVENT:
                         onReceiveGameEvent(received);
                         break;
+                        
+                    case WATCH_ROOM:
+                        onReceiveWatchRoom(received);
+                        break;
+                        
                     case EXIT:
                         running = false;
                 }
@@ -236,7 +241,7 @@ public class GameClient implements Runnable {
             String pairData
                     = ((r.getClient1() != null) ? r.getClient1().getLoginPlayer().getUsername(): "_")
                     + " VS "
-                    + ((r.getClient2() != null) ? r.getClient2().getLoginPlayer().getUsername() : "_");
+                    + ((r.getClient3() != null) ? r.getClient3().getLoginPlayer().getUsername() : "_");
 
             result += r.getId() + ";"
                     + pairData + ";"
@@ -275,6 +280,16 @@ public class GameClient implements Runnable {
         // send data
         sendData(StreamData.Type.MATCH_HISTORY.name() + ";" + result.substring(0, result.length()-1));
     }
+    
+    private void onReceiveWatchRoom(String received) {
+        String[] splitted = received.split(";");
+        String roomId = splitted[1];
+
+        String status = joinRoom(roomId, true);
+
+        sendData(StreamData.Type.WATCH_ROOM.name() + ";" + status);
+    }
+    
     // pair match
     private void onReceiveFindMatchAndAccept(String received) {
         // nếu đang trong phòng rồi thì báo lỗi ngay
@@ -305,27 +320,6 @@ public class GameClient implements Runnable {
             
         }
         
-//        if (cCompetitor == null) {
-//            // đặt cờ là đang tìm phòng
-//            this.findingMatch = true;
-//
-//            // trả về success để client hiển thị giao diện Đang tìm phòng
-//            sendData(StreamData.Type.FIND_MATCH.name() + ";success");
-//
-//        } else {
-//            // nếu có người cũng đang tìm trận thì hỏi ghép cặp pairMatch
-//            // trong lúc hỏi thì phải tắt tìm trận bên đối thủ đi (để nếu client khác tìm trận thì ko bị ghép đè)
-//            cCompetitor.findingMatch = false;
-//            this.findingMatch = false;
-//
-//            // lưu email đối thủ để dùng khi server nhận được result-pair-match
-//            this.cCompetitor = cCompetitor;
-//            cCompetitor.cCompetitor = this;
-//
-//            // trả thông tin đối thủ về cho 2 clients
-//            this.sendData(StreamData.Type.REQUEST_PAIR_MATCH.name() + ";" + cCompetitor.loginPlayer.getUsername());
-//            cCompetitor.sendData(StreamData.Type.REQUEST_PAIR_MATCH.name() + ";" + this.loginPlayer.getUsername());
-//        }
     }
 
     private void onReceiveCancelFindMatch(String received) {
@@ -569,13 +563,13 @@ public class GameClient implements Runnable {
 //                    + ";SERVER;"
 //                    + loginPlayer.getUsername()+ " đã vào phòng."
 //            );
-            if (this.joinedRoom.getTeam1().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this)) {
+            if (this.joinedRoom.getTeam1().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this) && isWatcher == false) {
                 ArrayList<GameClient> clients = this.joinedRoom.getTeam1();
                 System.out.println(this.loginPlayer.getUsername() + " " +"team 1");
                 clients.add(this);
                 this.joinedRoom.setTeam1(clients);
             }
-            if (this.joinedRoom.getTeam2().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this)) {
+            if (this.joinedRoom.getTeam2().size() < 2 && !this.joinedRoom.getTeam1().contains(this) && !this.joinedRoom.getTeam2().contains(this) && isWatcher == false) {
                 ArrayList<GameClient> clients = this.joinedRoom.getTeam2();
                 System.out.println(this.loginPlayer.getUsername() + " " +"team 2");
                 clients.add(this);

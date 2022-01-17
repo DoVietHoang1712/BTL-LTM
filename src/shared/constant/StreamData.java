@@ -68,6 +68,7 @@ public class StreamData {
         INVITE,
         REJECTED,
         ACCEPTED,
+        WATCH_ROOM,
     }
 
     // https://stackoverflow.com/a/6667365
