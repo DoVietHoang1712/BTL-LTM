@@ -158,6 +158,10 @@ public class SocketHandler {
                     case GAME_EVENT:
                         onReceiveGameEvent(received);
                         break;
+                        
+                    case WATCH_ROOM:
+                       onReceiveWatchRoom(received);
+                       break;
 
                     case EXIT:
                         running = false;
@@ -251,7 +255,6 @@ public class SocketHandler {
         } else if (status.equals("success")) {
             int roomCount = Integer.parseInt(splitted[2]);
 
-            // https://niithanoi.edu.vn/huong-dan-thao-tac-voi-jtable-lap-trinh-java-swing.html
             Vector vheader = new Vector();
             vheader.add("Mã");
             vheader.add("Số người đang xem");
@@ -594,7 +597,11 @@ public class SocketHandler {
     public void findMatch() {
         sendData(StreamData.Type.FIND_MATCH.name());
     }
-
+    
+    public void watchMatch(String roomId) {
+        sendData(StreamData.Type.WATCH_ROOM.name() + ";" + roomId);
+    }
+    
     public void cancelFindMatch() {
         sendData(StreamData.Type.CANCEL_FIND_MATCH.name());
     }

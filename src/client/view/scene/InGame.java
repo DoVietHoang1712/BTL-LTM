@@ -308,7 +308,6 @@ public class InGame extends javax.swing.JFrame {
     }
 
     public void removePoint(int row, int column) {
-        https://stackoverflow.com/a/2235596
         btnOnBoard[row][column].setIcon(null);
         btnOnBoard[row][column].setActionCommand("");
     }
