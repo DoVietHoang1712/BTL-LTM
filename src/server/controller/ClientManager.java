@@ -55,7 +55,6 @@ public class ClientManager {
                 return c;
             }
         }
-
         return null;
     }
     

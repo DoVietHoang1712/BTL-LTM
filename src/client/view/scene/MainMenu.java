@@ -167,6 +167,8 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     public void setListRoom(Vector vdata, Vector vheader) {
+        System.out.println(vdata);
+        System.out.println(vheader);
         tbListRoom.setModel(new DefaultTableModel(vdata, vheader));
     }
 

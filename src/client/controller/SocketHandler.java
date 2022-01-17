@@ -257,23 +257,20 @@ public class SocketHandler {
 
             Vector vheader = new Vector();
             vheader.add("Mã");
-            vheader.add("Cặp đấu");
-            vheader.add("Số người");
+            vheader.add("Số người đang xem");
 
             Vector vdata = new Vector();
 
             // i += 3: 3 là số cột trong bảng
             // i = 3; i < roomCount + 3: dữ liệu phòng bắt đầu từ index 3 trong mảng splitted
-            for (int i = 3; i < roomCount + 3; i += 3) {
+            for (int i = 3; i <= roomCount + 2; i += 2) {
 
                 String roomId = splitted[i];
-                String title = splitted[i + 1];
-                String clientCount = splitted[i + 2];
+                int viewers = Integer.parseInt(splitted[i + 1]);
 
                 Vector vrow = new Vector();
                 vrow.add(roomId);
-                vrow.add(title);
-                vrow.add(clientCount);
+                vrow.add(viewers);
 
                 vdata.add(vrow);
             }

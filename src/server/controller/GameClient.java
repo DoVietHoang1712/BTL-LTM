@@ -238,14 +238,9 @@ public class GameClient implements Runnable {
         result += roomCount + ";";
 
         for (Room r : listRoom) {
-            String pairData
-                    = ((r.getClient1() != null) ? r.getClient1().getLoginPlayer().getUsername(): "_")
-                    + " VS "
-                    + ((r.getClient3() != null) ? r.getClient3().getLoginPlayer().getUsername() : "_");
 
             result += r.getId() + ";"
-                    + pairData + ";"
-                    + r.clients.size() + ";";
+                    + r.getViewers().size() + ";";
         }
 
         // send data
