@@ -22,14 +22,19 @@ public class Room {
     GameClient client2 = null;
     GameClient client3 = null;
     GameClient client4 = null;
-    ArrayList<GameClient> team1 = new ArrayList<>();;
-    ArrayList<GameClient> team2 = new ArrayList<>();;
+    ArrayList<GameClient> team1 = new ArrayList<>();
+    ArrayList<GameClient> team2 = new ArrayList<>();
+    ArrayList<GameClient> viewers = new ArrayList<>();
     ArrayList<GameClient> clients = new ArrayList<>();
     boolean gameStarted = false;
 
     public LocalDateTime startedTime;
     public ArrayList<GameClient> getTeam1() {
         return team1;
+    }
+
+    public ArrayList<GameClient> getViewers() {
+        return viewers;
     }
 
     public void setTeam1(ArrayList<GameClient> team1) {
@@ -120,7 +125,48 @@ public class Room {
                         // tick interval
                         Caro.MATCH_TIME_LIMIT / 10
                 );
-        
+        game.getTurnTimer()
+                .setTimerCallBack(// end turn callback
+                        (Callable) () -> {
+                            // TURN_TIMER_END;<winner-email>
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
+                                    + StreamData.Type.TURN_TIMER_END.name() + ";"
+                                    + game.getLastMoveEmail()
+                            );
+                            return null;
+                        },
+                        // tick turn callback
+                        (Callable) () -> {
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
+                                    + StreamData.Type.TURN_TICK.name() + ";"
+                                    + game.getTurnTimer().getCurrentTick()
+                            );
+                            return null;
+                        },
+                        // tick interval
+                        Caro.TURN_TIME_LIMIT / 10
+                );
+        game.getTurnTimer()
+                .setTimerCallBack(// end turn callback
+                        (Callable) () -> {
+                            // TURN_TIMER_END;<winner-email>
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
+                                    + StreamData.Type.TURN_TIMER_END.name() + ";"
+                                    + game.getLastMoveEmail()
+                            );
+                            return null;
+                        },
+                        // tick turn callback
+                        (Callable) () -> {
+                            broadcast(StreamData.Type.GAME_EVENT + ";"
+                                    + StreamData.Type.TURN_TICK.name() + ";"
+                                    + game.getTurnTimer().getCurrentTick()
+                            );
+                            return null;
+                        },
+                        // tick interval
+                        Caro.TURN_TIME_LIMIT / 10
+                );
     }
 
     // add/remove client
