@@ -14,7 +14,7 @@ import shared.helper.Point;
 public class Caro {
 
     public static final int ROW = 16, COL = 16;
-    public static final int TURN_TIME_LIMIT = 60, MATCH_TIME_LIMIT = 10 * 100;
+    public static final int TURN_TIME_LIMIT = 6000, MATCH_TIME_LIMIT = 10 * 1000;
 
     ArrayList<History> history;
     History preMove = null;
